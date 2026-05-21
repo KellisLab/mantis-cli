@@ -26,10 +26,15 @@ The wizard will:
 
 After setup, switch context with **`/mantis:space`** and **`/mantis:thread`** (Claude Code **AskUserQuestion** menu with arrow keys). Terminal: `mantis-pick-space` / `mantis-pick-thread`.
 
-Then tell the user to:
+If they have not run **`mantis-setup`** yet, tell them:
 
-1. Enable the **mantis** plugin if needed (`/plugin`).
-2. Confirm **API URL** matches their instance when the plugin prompts.
-3. Run **`/reload-plugins`** so MCP picks up the thread header.
+```bash
+npm install -g mantis-claude-code
+mantis-setup
+```
+
+That installs the **mantis@mantis-plugins** Claude Code plugin and saves API/space/thread config.
+
+Then: **`/reload-plugins`** in Claude Code (if already open). Confirm **API URL** when prompted (`http://localhost:8000` for local).
 
 For connection errors: URL must end with `/mcp_integrated/`; avoid `/mcp/mcp` unless their deployment uses it.

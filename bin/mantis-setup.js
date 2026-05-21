@@ -2,6 +2,7 @@
 import { fetchOwnedSpaces } from '../lib/fetch.js';
 import { DEFAULT_API_BASE, loadConfig, normalizeBaseUrl, saveConfig } from '../lib/config.js';
 import { pickSpace, pickThread } from '../lib/picker.js';
+import { installClaudePlugin } from '../lib/claude-plugin.js';
 import { banner, die, info, promptInput, promptSecret, success } from '../lib/ui.js';
 
 async function main() {
@@ -39,8 +40,19 @@ async function main() {
   info(`Space:  ${final.spaceName} (${final.spaceId})`);
   info(`Thread: ${final.spaceStateName} (${final.spaceStateId})`);
   info(`MCP:    ${apiBaseUrl}/mcp_integrated/`);
-  console.log('');
-  info('Enable the mantis plugin → /reload-plugins → /mantis:status');
+  try {
+    const cc = installClaudePlugin();
+    if (cc.method === 'cli') {
+      success('Claude Code plugin installed (mantis@mantis-plugins)');
+      info('Run /reload-plugins in Claude Code if it is already open');
+    } else {
+      success('Claude Code settings updated');
+      info(cc.hint);
+    }
+  } catch (e) {
+    info(`Claude plugin auto-install skipped: ${e.message}`);
+    info('Run: npm install -g mantis-claude-code && mantis-setup');
+  }
   console.log('');
 }
 

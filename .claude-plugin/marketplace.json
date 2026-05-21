@@ -1,0 +1,14 @@
+{
+  "name": "mantis-plugins",
+  "owner": {
+    "name": "Kellis Lab"
+  },
+  "plugins": [
+    {
+      "name": "mantis",
+      "description": "Mantis MCP: spaces, threads, and map context for Claude Code",
+      "version": "1.0.1",
+      "source": "."
+    }
+  ]
+}
