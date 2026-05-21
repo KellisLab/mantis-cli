@@ -1,3 +1,6 @@
+# Publishes when you push a version tag (e.g. v1.0.1).
+# Requires repo secret NPM_TOKEN (npmjs.com automation token with publish on @kellislab).
+
 name: Publish to npm
 
 on:
@@ -16,7 +19,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Set version from tag
