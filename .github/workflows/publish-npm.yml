@@ -1,5 +1,6 @@
 # Publishes when you push a version tag (e.g. v1.0.1).
-# Requires repo secret NPM_TOKEN (your npm automation token — publishes as your npm user).
+# Requires repo secret NPM_TOKEN: granular token with publish access + "Bypass 2FA for automation"
+# (otherwise publish fails with EOTP). Classic "Automation" tokens also work.
 
 name: Publish to npm
 
@@ -26,6 +27,7 @@ jobs:
         run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
 
       - run: npm ci
+      - run: npm pkg fix
       - run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

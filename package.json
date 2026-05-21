@@ -1,6 +1,6 @@
 {
   "name": "mantis-claude-code",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Claude Code plugin for Mantis — MCP setup, space/thread selection, and platform skills",
   "type": "module",
   "license": "MIT",
@@ -20,11 +20,11 @@
     "@inquirer/prompts": "^7.5.1"
   },
   "bin": {
-    "mantis-setup": "./bin/mantis-setup.js",
-    "mantis-select": "./bin/mantis-select.js",
-    "mantis-status": "./bin/mantis-status.js",
-    "mantis-pick-space": "./bin/mantis-pick-space.js",
-    "mantis-pick-thread": "./bin/mantis-pick-thread.js"
+    "mantis-setup": "bin/mantis-setup.js",
+    "mantis-select": "bin/mantis-select.js",
+    "mantis-status": "bin/mantis-status.js",
+    "mantis-pick-space": "bin/mantis-pick-space.js",
+    "mantis-pick-thread": "bin/mantis-pick-thread.js"
   },
   "files": [
     ".claude-plugin",
