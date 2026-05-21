@@ -50,8 +50,9 @@ async function main() {
       info(cc.hint);
     }
   } catch (e) {
-    info(`Claude plugin auto-install skipped: ${e.message}`);
-    info('Run: npm install -g mantis-claude-code && mantis-setup');
+    info(`Claude plugin install failed: ${e.message}`);
+    info('Fix: claude plugin install mantis@mantis-plugins');
+    info('Then in Claude Code: Enable plugin → /reload-plugins');
   }
   console.log('');
 }
