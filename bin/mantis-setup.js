@@ -31,7 +31,7 @@ async function main() {
   success(`${spaces.length} space(s) found`);
   saveConfig({ apiBaseUrl, apiKey });
 
-  await pickSpace();
+  await pickSpace('', spaces);
   const final = await pickThread();
   saveConfig({ ...final, apiBaseUrl, apiKey });
 
