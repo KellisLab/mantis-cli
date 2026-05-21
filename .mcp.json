@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mantis": {
+      "type": "http",
+      "url": "${user_config.api_base_url}/mcp_integrated/",
+      "headersHelper": "node \"${CLAUDE_PLUGIN_ROOT}/bin/mantis-mcp-headers.js\"",
+      "headers": {
+        "X-Space-State-ID": "7e9f4c5a-7563-4dda-abbb-723f5adbe1c1"
+      }
+    }
+  }
+}

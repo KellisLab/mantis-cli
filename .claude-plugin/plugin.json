@@ -1,0 +1,18 @@
+{
+  "name": "mantis",
+  "description": "Connect Claude Code to Mantis MCP — explore maps, clusters, and notebooks in your spaces",
+  "version": "1.0.0",
+  "author": {
+    "name": "MIT Mantis"
+  },
+  "homepage": "https://mantis.csail.mit.edu",
+  "userConfig": {
+    "api_base_url": {
+      "type": "string",
+      "title": "Mantis API URL",
+      "description": "Base URL only (no path). Use http://localhost:8000 for local Docker.",
+      "default": "http://localhost:8000",
+      "required": true
+    }
+  }
+}
