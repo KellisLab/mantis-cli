@@ -11,15 +11,24 @@ Slash-command `!` blocks cannot use an interactive terminal (no arrow keys). Use
 
 ## Steps
 
-1. Run (substitute filter from `$ARGUMENTS` if present):
+1. If `$ARGUMENTS` looks like a Mantis space URL (`/space/{uuid}`) or a UUID, resolve it first:
 
 ```bash
-node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-list-spaces.js" $ARGUMENTS
+node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-resolve-space.js" $ARGUMENTS
+```
+
+If JSON has `space`, run `mantis-set-space.js` with that id and name, then stop (skip browse). On `error`, explain and offer browse.
+
+2. Otherwise run (search text or empty for recent page):
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-list-spaces.js" --filter "$ARGUMENTS"
 ```
 
 Parse the JSON. On `error`, tell the user to run `mantis-setup` in a terminal.
 
-2. **AskUserQuestion** (max 4 options per call):
+3. **AskUserQuestion** (max 4 options per call):
+   - If the user pasted a link in chat, pass it as `$ARGUMENTS` or run step 1 with that URL.
    - `header`: `Space`
    - `question`: `Which Mantis space should Claude use?`
    - For each item in `spaces`, one option:
@@ -30,7 +39,7 @@ Parse the JSON. On `error`, tell the user to run `mantis-setup` in a terminal.
      - `description`: `Show next page (${total} total)`
    - On "More spaces…", re-run with `--offset` increased by `limit` (same filter), then AskUserQuestion again.
 
-3. After the user picks a space (not "More"), run:
+4. After the user picks a space (not "More"), run:
 
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-set-space.js" <uuid-from-description> "<name>"
@@ -38,9 +47,9 @@ node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-set-space.js" <uuid-from-description> "<n
 
 Use the UUID from the selected option's **description**, not the label.
 
-4. If `threadCleared`, run **`/mantis:thread`** next (same session).
+5. If `threadCleared`, run **`/mantis:thread`** next (same session).
 
-5. **Do not ask the user** to run `/reload-plugins`. Only needed when changing **thread** (step 3 of `/mantis:thread` flow).
+6. **Do not ask the user** to run `/reload-plugins`. Only needed when changing **thread** (step 3 of `/mantis:thread` flow).
 
 ## Terminal fallback
 
