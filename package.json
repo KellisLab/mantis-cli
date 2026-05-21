@@ -1,9 +1,10 @@
 {
-  "name": "@kellislab/mantis-claude-code",
+  "name": "mantis-claude-code",
   "version": "1.0.0",
   "description": "Claude Code plugin for Mantis — MCP setup, space/thread selection, and platform skills",
   "type": "module",
   "license": "MIT",
+  "author": "AnasMaar",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KellisLab/mantis-claude-code.git"
@@ -13,7 +14,6 @@
   },
   "homepage": "https://github.com/KellisLab/mantis-claude-code#readme",
   "publishConfig": {
-    "access": "public",
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
@@ -41,7 +41,6 @@
     "mantis",
     "claude-code",
     "mcp",
-    "plugin",
-    "kellislab"
+    "plugin"
   ]
 }
