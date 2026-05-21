@@ -20,7 +20,7 @@ node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-setup.js"
 The wizard will:
 
 1. Ask for Mantis API URL and Developer API key (`live_…` from the Mantis Developer portal).
-2. List owned spaces (most recent first).
+2. List accessible spaces — owned, shared, and public (most recent first).
 3. Pick or create a **space state** (thread).
 4. Save config for MCP headers (`X-Space-State-ID`).
 

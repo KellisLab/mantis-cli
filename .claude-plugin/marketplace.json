@@ -7,7 +7,7 @@
     {
       "name": "mantis",
       "description": "Mantis MCP: spaces, threads, and map context for Claude Code",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "source": {
         "source": "npm",
         "package": "mantis-claude-code"

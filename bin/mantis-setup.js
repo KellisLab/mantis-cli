@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { fetchOwnedSpaces } from '../lib/fetch.js';
+import { fetchAccessibleSpaces } from '../lib/fetch.js';
 import { DEFAULT_API_BASE, loadConfig, normalizeBaseUrl, saveConfig } from '../lib/config.js';
 import { pickSpace, pickThread } from '../lib/picker.js';
 import { installClaudePlugin } from '../lib/claude-plugin.js';
@@ -20,13 +20,13 @@ async function main() {
   process.stdout.write('  \x1b[2m… fetching spaces\x1b[0m');
   let spaces;
   try {
-    spaces = await fetchOwnedSpaces(apiBaseUrl, apiKey);
+    spaces = await fetchAccessibleSpaces(apiBaseUrl, apiKey);
     process.stdout.write('\r\x1b[K');
   } catch (e) {
     process.stdout.write('\r\x1b[K');
     die(`Could not list spaces: ${e.message}`);
   }
-  if (!spaces.length) die('No owned spaces found.');
+  if (!spaces.length) die('No spaces found.');
 
   success(`${spaces.length} space(s) found`);
   saveConfig({ apiBaseUrl, apiKey });

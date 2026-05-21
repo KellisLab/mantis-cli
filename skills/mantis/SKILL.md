@@ -19,7 +19,7 @@ Mantis is a spatial data workspace: **spaces** contain **maps** (embeddings of d
 
 | Endpoint                                      | Purpose                             |
 | --------------------------------------------- | ----------------------------------- |
-| `GET /api/v1/me/spaces/?scope=owned&limit=20` | List user's spaces                  |
+| `GET /api/v1/me/spaces/?scope=accessible&limit=100` | List owned, shared, and public spaces |
 | `GET /api/v1/me/space-states/?space_id=`      | List threads                        |
 | `POST /api/v1/me/space-states/`               | Create thread `{ space_id, name? }` |
 
