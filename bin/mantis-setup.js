@@ -36,6 +36,7 @@ async function main() {
   info(`Space:  ${final.spaceName} (${final.spaceId})`);
   info(`Thread: ${final.spaceStateName} (${final.spaceStateId})`);
   info(`MCP:    ${apiBaseUrl}/mcp_integrated/`);
+  info('In Claude Code run /reload-plugins so MCP uses this space and thread.');
   try {
     const cc = installClaudePlugin();
     if (cc.method === 'cli') {

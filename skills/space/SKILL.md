@@ -47,9 +47,9 @@ node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-set-space.js" <uuid-from-description> "<n
 
 Use the UUID from the selected option's **description**, not the label.
 
-5. If `threadCleared`, run **`/mantis:thread`** next (same session).
+5. If `needThread` or `threadCleared`, run **`/mantis:thread`** next in this session (user must pick a thread for the new space).
 
-6. **Do not ask the user** to run `/reload-plugins`. Only needed when changing **thread** (step 3 of `/mantis:thread` flow).
+6. After space or thread changes, you **must** run **`/reload-plugins`** yourself so MCP picks up the new `X-Space-State-ID` header (do not ask the user to do it).
 
 ## Terminal fallback
 

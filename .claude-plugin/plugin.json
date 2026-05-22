@@ -1,7 +1,7 @@
 {
   "name": "mantis",
   "description": "Connect Claude Code to Mantis MCP — explore maps, clusters, and notebooks in your spaces",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "author": {
     "name": "MIT Mantis"
   },

@@ -16,4 +16,13 @@ saveConfig({
   spaceName: name || cfg.spaceName,
   ...(changed ? { spaceStateId: undefined, spaceStateName: undefined } : {}),
 });
-console.log(JSON.stringify({ ok: true, spaceId: id, spaceName: name, threadCleared: changed }));
+console.log(
+  JSON.stringify({
+    ok: true,
+    spaceId: id,
+    spaceName: name,
+    threadCleared: changed,
+    needThread: changed,
+    needReloadPlugins: true,
+  }),
+);

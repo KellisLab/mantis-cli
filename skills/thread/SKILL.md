@@ -32,7 +32,7 @@ If error mentions space, tell user to run **`/mantis:space`** first.
    - **New thread** → `node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-set-thread.js" --new "Claude Code"`
    - Otherwise → `node "${CLAUDE_PLUGIN_ROOT}/bin/mantis-set-thread.js" <uuid> "<name>"`
 
-4. **Immediately after** a successful `mantis-set-thread.js`, you **must** run the slash command **`/reload-plugins`** yourself in this same turn (do not ask the user). Claude Code only re-reads `X-Space-State-ID` when the MCP server reconnects.
+4. **Immediately after** a successful `mantis-set-thread.js`, you **must** run **`/reload-plugins`** yourself in this same turn (do not ask the user). MCP headers are fixed at connect time; changing space in `mantis-setup` also requires `/reload-plugins` after the thread is set.
 
 5. Confirm with one line: space name, thread name, and that MCP was refreshed.
 
