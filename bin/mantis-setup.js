@@ -1,19 +1,28 @@
 #!/usr/bin/env node
-import { DEFAULT_API_BASE, loadConfig, normalizeBaseUrl, saveConfig } from '../lib/config.js';
+import {
+  DEFAULT_API_BASE,
+  DEVELOPER_PORTAL_URL,
+  loadConfig,
+  normalizeBaseUrl,
+  saveConfig,
+} from '../lib/config.js';
 import { pickSpace, pickThread } from '../lib/picker.js';
 import { installClaudePlugin } from '../lib/claude-plugin.js';
 import { banner, die, info, promptInput, promptSecret, success } from '../lib/ui.js';
 
 async function main() {
   const prev = loadConfig();
-  banner('Mantis ↔ Claude Code', 'Developer API key from the Mantis portal (linked to your user)');
+  banner('Mantis ↔ Claude Code', 'Links your Claude Code session to a Mantis space and thread');
 
   const apiBaseUrl = normalizeBaseUrl(
     await promptInput('Mantis API URL', {
       default: prev.apiBaseUrl || process.env.MANTIS_API_URL || DEFAULT_API_BASE,
     }),
   );
-  const apiKey = (await promptSecret('API key', { default: prev.apiKey }))?.trim();
+  info(`API keys: ${DEVELOPER_PORTAL_URL}`);
+  const apiKey = (await promptSecret('API key (Ctrl+click link above to open portal)', {
+    default: prev.apiKey,
+  }))?.trim();
   if (!apiKey) die('API key is required.');
 
   saveConfig({ apiBaseUrl, apiKey });

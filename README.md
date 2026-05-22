@@ -6,8 +6,8 @@ Claude Code plugin for [Mantis](https://mantis.csail.mit.edu) — connect your t
 
 - [Claude Code](https://code.claude.com) (`claude` on your PATH)
 - [Node.js](https://nodejs.org/) 18+
-- A running Mantis API (e.g. `http://localhost:8000` for local dev)
-- A Mantis **Developer API key** (`live_…` from the developer portal)
+- A running Mantis API (default `https://kellis-h200-1.csail.mit.edu`; local dev: `http://localhost:8000`)
+- A Mantis **Developer API key** (`live_…`) from https://mantis.csail.mit.edu/developer
 
 ## Install
 

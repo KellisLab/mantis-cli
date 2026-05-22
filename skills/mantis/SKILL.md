@@ -39,7 +39,7 @@ Space management tools (`create_space`, `create_map_from_url`, etc.) need sessio
 - Refer to spaces and maps by **name** in user-facing text; use UUIDs only in tool arguments.
 - Maps belong to a space; pick `primary_map_id` from space list API or `get_space_context`.
 - Notebooks can bootstrap from `X-Space-State-ID` alone; file uploads still need a chat session when applicable.
-- Default API URL: `http://localhost:8000` (change in plugin settings or `mantis-setup` for production).
+- Default API URL: `https://kellis-h200-1.csail.mit.edu` (local: `http://localhost:8000`). API keys: https://mantis.csail.mit.edu/developer
 
 ## Slash commands in this plugin
 

@@ -1,7 +1,7 @@
 {
   "name": "mantis",
   "description": "Connect Claude Code to Mantis MCP — explore maps, clusters, and notebooks in your spaces",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "author": {
     "name": "MIT Mantis"
   },
@@ -10,8 +10,8 @@
     "api_base_url": {
       "type": "string",
       "title": "Mantis API URL",
-      "description": "Base URL only (no path). Use http://localhost:8000 for local Docker.",
-      "default": "http://localhost:8000",
+      "description": "Base URL only (no path). Default is the CSAIL H200 API; use http://localhost:8000 for local Docker.",
+      "default": "https://kellis-h200-1.csail.mit.edu",
       "required": true
     }
   }

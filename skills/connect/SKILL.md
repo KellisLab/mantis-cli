@@ -35,7 +35,7 @@ mantis-setup
 
 That installs the **mantis@mantis-plugins** Claude Code plugin and saves API/space/thread config.
 
-Then: **`/reload-plugins`** in Claude Code (if already open). Confirm **API URL** when prompted (`http://localhost:8000` for local).
+Then: **`/reload-plugins`** in Claude Code (if already open). Confirm **API URL** when prompted (default `https://kellis-h200-1.csail.mit.edu`; use `http://localhost:8000` for local Docker). API keys: https://mantis.csail.mit.edu/developer
 
 If `/plugin` shows **Disabled** or *not installed*: run `claude plugin install mantis@mantis-plugins`, enable it, then `/reload-plugins`. If update fails, uninstall and reinstall the plugin (stale `installed_plugins.json` / orphaned cache).
 
