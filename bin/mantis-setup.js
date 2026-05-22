@@ -8,6 +8,7 @@ import {
 } from '../lib/config.js';
 import { pickSpace, pickThread } from '../lib/picker.js';
 import { installClaudePlugin } from '../lib/claude-plugin.js';
+import { syncMcpConfigs } from '../lib/mcp-config.js';
 import { banner, die, info, promptInput, promptSecret, success } from '../lib/ui.js';
 
 async function main() {
@@ -30,6 +31,7 @@ async function main() {
   const afterSpace = await pickSpace();
   const final = await pickThread();
   saveConfig({ ...final, apiBaseUrl, apiKey });
+  syncMcpConfigs({ ...final, apiBaseUrl, apiKey });
 
   console.log('');
   success('Setup complete');

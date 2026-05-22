@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { createSpaceState } from '../lib/api.js';
 import { loadConfig, saveConfig } from '../lib/config.js';
+import { syncMcpConfigs } from '../lib/mcp-config.js';
 
 const arg = process.argv[2];
 const arg2 = process.argv[3];
@@ -23,9 +24,11 @@ if (arg === '--new') {
   thread = { id: arg, name: arg2 || arg };
 }
 
-saveConfig({
+const next = {
   ...cfg,
   spaceStateId: thread.id,
   spaceStateName: thread.name,
-});
+};
+saveConfig(next);
+syncMcpConfigs(next);
 console.log(JSON.stringify({ ok: true, spaceStateId: thread.id, name: thread.name }));

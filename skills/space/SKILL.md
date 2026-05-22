@@ -49,7 +49,7 @@ Use the UUID from the selected option's **description**, not the label.
 
 5. If `needThread` or `threadCleared`, run **`/mantis:thread`** next in this session (user must pick a thread for the new space).
 
-6. After space or thread changes, you **must** run **`/reload-plugins`** yourself so MCP picks up the new `X-Space-State-ID` header (do not ask the user to do it).
+6. After space or thread changes, tell the user to run **`/reload-plugins`** so MCP reconnects with the updated `X-Space-State-ID` header. Do not try to invoke `/reload-plugins` as a Skill tool.
 
 ## Terminal fallback
 

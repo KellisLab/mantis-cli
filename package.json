@@ -1,6 +1,6 @@
 {
   "name": "mantis-claude-code",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Claude Code plugin for Mantis — MCP setup, space/thread selection, and platform skills",
   "type": "module",
   "license": "MIT",

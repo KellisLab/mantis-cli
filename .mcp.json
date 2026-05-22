@@ -2,8 +2,7 @@
   "mcpServers": {
     "mantis": {
       "type": "http",
-      "url": "${user_config.api_base_url}/mcp_integrated/",
-      "headersHelper": "node \"${CLAUDE_PLUGIN_ROOT}/bin/mantis-mcp-headers.js\""
+      "url": "${user_config.api_base_url}/mcp_integrated/"
     }
   }
 }

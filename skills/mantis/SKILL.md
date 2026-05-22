@@ -11,8 +11,8 @@ Mantis is a spatial data workspace: **spaces** contain **maps** (embeddings of d
 
 1. User runs `mantis-setup` (or `/mantis:connect`) with a Developer API key from the Mantis portal.
 2. MCP endpoint: `{api_base_url}/mcp_integrated/` (trailing slash required).
-3. Required header on every MCP request: `**X-Space-State-ID`** = thread UUID from setup (plugin supplies this via `headersHelper`).
-4. After changing space/thread: `mantis-select` then `**/reload-plugins**`.
+3. Required header on every MCP request: `**X-Space-State-ID`** = thread UUID from setup (setup writes this into the plugin MCP config).
+4. After changing space/thread: `mantis-select` then ask the user to run `**/reload-plugins**`.
 
 ## REST (setup only)
 
