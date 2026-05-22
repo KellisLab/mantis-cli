@@ -39,7 +39,7 @@ async function main() {
   try {
     const cc = installClaudePlugin();
     if (cc.method === 'cli') {
-      success('Claude Code plugin installed (mantis@mantis-plugins)');
+      success(`Claude Code plugin installed (mantis@mantis-plugins, ${cc.scope || 'user'} scope)`);
       info('Run /reload-plugins in Claude Code if it is already open');
     } else {
       success('Claude Code settings updated');
