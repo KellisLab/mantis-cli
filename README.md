@@ -2,6 +2,8 @@
 
 Mantis developer CLI — manage spaces, create maps from local data, and configure [Claude Code](https://code.claude.com) as a Mantis client. Distributed alongside the **mantis@mantis-plugins** Claude Code plugin.
 
+> **Naming note:** the repo is `KellisLab/mantis-cli` but the npm package is published as **`mantisai-cli`** because `mantis-cli` was already taken on npm. The binary you run is just `mantis`.
+
 ## Requirements
 
 - [Node.js](https://nodejs.org/) 18+
