@@ -38,7 +38,7 @@ function addMapOptions(cmd) {
 program
   .name('mantis')
   .description('Mantis developer CLI — manage spaces, create maps, and configure Claude Code integration')
-  .version('2.0.0');
+  .version('2.0.1');
 
 program
   .command('setup')
