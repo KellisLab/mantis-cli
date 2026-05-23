@@ -1,4 +1,4 @@
-# mantis-cli
+# mantisai-cli
 
 Mantis developer CLI — manage spaces, create maps from local data, and configure [Claude Code](https://code.claude.com) as a Mantis client. Distributed alongside the **mantis@mantis-plugins** Claude Code plugin.
 
@@ -12,7 +12,7 @@ Mantis developer CLI — manage spaces, create maps from local data, and configu
 ## Install
 
 ```bash
-npm install -g mantis-cli
+npm install -g mantisai-cli
 mantis setup
 ```
 
@@ -82,7 +82,7 @@ Use the same Mantis API base URL as the space you are targeting (local vs produc
 **CLI**:
 
 ```bash
-npm install -g mantis-cli@latest
+npm install -g mantisai-cli@latest
 ```
 
 **Plugin (slash commands, MCP, skills)** — in Claude Code:
@@ -108,7 +108,7 @@ If you previously installed the package as `mantis-claude-code`, migrate with:
 
 ```bash
 npm uninstall -g mantis-claude-code
-npm install -g mantis-cli
+npm install -g mantisai-cli
 mantis setup
 ```
 
@@ -116,7 +116,7 @@ Your local config at `~/.mantis/claude-code/config.json` is preserved.
 
 ## npm
 
-https://www.npmjs.com/package/mantis-cli
+https://www.npmjs.com/package/mantisai-cli
 
 ## License
 

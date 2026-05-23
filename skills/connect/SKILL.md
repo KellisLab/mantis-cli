@@ -29,7 +29,7 @@ After setup, switch context with **`/mantis:space`** and **`/mantis:thread`** (C
 If they have not run **`mantis setup`** yet, tell them:
 
 ```bash
-npm install -g mantis-cli
+npm install -g mantisai-cli
 mantis setup
 ```
 
