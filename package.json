@@ -1,6 +1,6 @@
 {
   "name": "mantisai-cli",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Mantis developer CLI — create maps, manage spaces and threads, configure Claude Code, and connect agents to Mantis MCP.",
   "type": "module",
   "license": "MIT",

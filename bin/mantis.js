@@ -90,6 +90,9 @@ addMapOptions(create
       const result = await createCodebaseCsv(root, out, { maxChars: opts.maxChars });
       success(`Indexed ${result.count} files`);
       info(`CSV: ${result.outFile}`);
+      if (result.skipped?.length) {
+        info(`Skipped ${result.skipped.length} binary file(s) (e.g. ${result.skipped.slice(0, 3).join(', ')})`);
+      }
       if (opts.createMap) {
         const mapResult = await createMapFlow(result.outFile, {
           ...opts,
