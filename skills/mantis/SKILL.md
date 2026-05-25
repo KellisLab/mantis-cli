@@ -33,6 +33,7 @@ Install editor skills (CLI-only workflow, no MCP plugin):
 ```bash
 mantis setup claude     # ~/.claude/skills/
 mantis setup opencode   # ~/.config/opencode/skills/ + .opencode/skills/
+mantis setup codex      # ~/.agents/skills/ (add --project for ./.agents/skills/)
 ```
 
 ## MCP tools via CLI

@@ -10,6 +10,7 @@ Full docs (VitePress):
 - [Install](https://mantis.csail.mit.edu/docs/mantis-cli/install)
 - [Claude Code](https://mantis.csail.mit.edu/docs/mantis-cli/claude-code)
 - [OpenCode](https://mantis.csail.mit.edu/docs/mantis-cli/opencode)
+- [Codex](https://mantis.csail.mit.edu/docs/mantis-cli/codex)
 
 Source: `Mantis/docs/mantis-cli/`
 
@@ -33,7 +34,7 @@ Config: `~/.mantis/config.json`
 
 | Command | Description |
 | --- | --- |
-| `mantis setup [claude\|opencode]` | API + space/thread, or sync editor skills |
+| `mantis setup [claude\|opencode\|codex]` | API + space/thread, or sync editor skills |
 | `mantis status` | Current config |
 | `mantis select [space\|thread\|both]` | Switch space/thread |
 | `mantis spaces list\|resolve\|set` | Scriptable space ops (JSON) |

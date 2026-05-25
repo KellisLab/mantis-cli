@@ -104,7 +104,7 @@ program
 
   .description('Mantis CLI — spaces, maps, and MCP tools for AI agents')
 
-  .version('3.0.0');
+  .version('3.0.1');
 
 
 
@@ -112,15 +112,17 @@ program
 
   .command('setup [provider]')
 
-  .description('Configure Mantis, or install skills for claude/opencode')
+  .description('Configure Mantis, or install skills for claude/opencode/codex')
 
-  .action(async (provider) => {
+  .option('--project', 'Also sync repo-scoped skills (Codex: ./.agents/skills/)')
+
+  .action(async (provider, opts) => {
 
     try {
 
       if (!provider) return setup.run();
 
-      setup.runProvider(provider);
+      setup.runProvider(provider, { project: !!opts.project });
 
     } catch (e) {
 
