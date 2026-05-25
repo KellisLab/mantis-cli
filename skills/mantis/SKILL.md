@@ -1,52 +1,68 @@
 ---
+name: mantis
+description: Work with MIT Mantis spaces, maps, clusters, and notebooks via the mantis CLI. Use whenever the user mentions Mantis. Always run `mantis use get_space_context` first before any other Mantis action.
+---
 
-## name: mantis
-description: Work with MIT Mantis spaces, maps, clusters, and notebooks via MCP. Use when the user mentions Mantis, spaces, maps, embeddings, clusters, bags, or wants to explore/visualize data in their workspace.
+# Mantis
 
-# Mantis (Claude Code)
+Mantis is a spatial data workspace: **spaces** contain **maps**, **clusters**, **bags**, and **notebooks**.
 
-Mantis is a spatial data workspace: **spaces** contain **maps** (embeddings of datasets), **clusters**, **bags**, and **notebooks**.
+## First step
 
-## Connection
+Run this **before any other Mantis command or tool** (skip only if you already ran it this turn):
 
-1. User runs `mantis setup` (or `/mantis:connect`) with a Developer API key from the Mantis portal.
-2. MCP endpoint: `{api_base_url}/mcp_integrated/` (trailing slash required).
-3. Required header on every MCP request: `**X-Space-State-ID`** = thread UUID from setup (setup writes this into the plugin MCP config).
-4. After changing space/thread: `mantis select` then ask the user to run `**/reload-plugins**`.
+```bash
+mantis use get_space_context
+```
 
-## REST (setup only)
+If it fails with no thread configured, run `mantis setup` or `mantis select thread`, then retry.
 
+## Setup
 
-| Endpoint                                      | Purpose                             |
-| --------------------------------------------- | ----------------------------------- |
-| `GET /api/v1/me/spaces/?scope=accessible&limit=100` | List owned, shared, and public spaces |
-| `GET /api/v1/me/space-states/?space_id=`      | List threads                        |
-| `POST /api/v1/me/space-states/`               | Create thread `{ space_id, name? }` |
+```bash
+mantis setup          # API key + space + thread (only prompts what's missing)
+mantis status
+mantis select space
+mantis select thread
+```
 
+Config lives at `~/.mantis/config.json`.
 
-Auth: `Authorization: Bearer live_…` — key must be linked to a Mantis user.
+Install editor skills (CLI-only workflow, no MCP plugin):
 
-## MCP tools (read-focused)
+```bash
+mantis setup claude     # ~/.claude/skills/
+mantis setup opencode   # ~/.config/opencode/skills/ + .opencode/skills/
+```
 
-Call `**get_space_context**` first when you need map IDs, field types, cluster names, or point counts.
+## MCP tools via CLI
 
-Other useful tools: `get_tree_status`, `get_cluster_children`, `get_bags_from_map`, `get_bag_contents`, `get_point_details`, `get_selected_points`, `get_available_dimensions`.
+Every Mantis MCP tool is available through the CLI — no editor MCP plugin required:
 
-Space management tools (`create_space`, `create_map_from_url`, etc.) need session or space-state context.
+```bash
+mantis tools
+mantis use get_space_context
+mantis use get_cluster_children --map-id <uuid> --cluster-id <id>
+mantis use general_search --query "your search"
+```
+
+Use `--args '{"key":"value"}'` for complex arguments. Kebab flags map to snake_case (`--map-id` → `map_id`).
+
+Use map IDs, field types, and cluster names from the `get_space_context` output — do not guess them.
+
+## REST via CLI (setup & resources)
+
+| Task | Command |
+|------|---------|
+| Setup | `mantis setup` |
+| Status | `mantis status` |
+| List spaces | `mantis spaces list --filter "query"` |
+| Create map from CSV | `mantis create map file.csv` |
+| Index codebase | `mantis create codebase . --create-map` |
+
+API keys: https://mantis.csail.mit.edu/developer/#keys
 
 ## Conventions
 
-- Refer to spaces and maps by **name** in user-facing text; use UUIDs only in tool arguments.
-- Maps belong to a space; pick `primary_map_id` from space list API or `get_space_context`.
-- Notebooks can bootstrap from `X-Space-State-ID` alone; file uploads still need a chat session when applicable.
-- Default API URL: `https://kellis-h200-1.csail.mit.edu` (local: `http://localhost:8000`). API keys: https://mantis.csail.mit.edu/developer/#keys
-
-## Slash commands in this plugin
-
-- `/mantis:connect` — first-time setup (API key)
-- `/mantis:space` — pick space via **AskUserQuestion** (↑↓ in Claude UI; optional filter: `/mantis:space atlas`)
-- `/mantis:thread` — pick thread the same way
-- Terminal pickers: `mantis select space` / `mantis select thread` if the in-chat menu fails
-- `/mantis:status` — show current space/thread
-
-After **`/mantis:thread`** only, run `/reload-plugins` once (MCP headers are fixed at connect time). Space-only changes do not need a reload until a thread is set.
+- Refer to spaces and maps by **name** in user-facing text; use UUIDs in tool arguments.
+- After `mantis select space` or `mantis select thread`, the next `mantis use` picks up the new context automatically — no reload step.

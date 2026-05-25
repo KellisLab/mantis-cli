@@ -1,17 +1,20 @@
 ---
-description: Change the active Mantis space or thread (space state) for MCP. Use when the user wants to switch workspace or conversation context.
-disable-model-invocation: true
+description: Switch active Mantis space and thread via the CLI. Run `mantis use get_space_context` first when Mantis is mentioned.
 ---
 
-# Select Mantis space / thread
+# Select space and thread
 
-Prefer the interactive slash commands (arrow keys + filter as you type):
+First: `mantis use get_space_context` (unless you just ran it this turn).
 
-- **`/mantis:space`** — pick a space
-- **`/mantis:thread`** — pick a thread (after space)
+```bash
+mantis select space
+mantis select thread
+```
 
-CLI fallback: `mantis select` or `node "${CLAUDE_PLUGIN_ROOT}/bin/mantis.js" select`.
+Or both:
 
-After a change, run **`/reload-plugins`**.
+```bash
+mantis select
+```
 
-Optional argument from user (not passed to CLI automatically): if they give a **thread UUID**, they can paste it during setup or edit `~/.mantis/claude-code/config.json` (or `${CLAUDE_PLUGIN_DATA}/config.json`) and set `spaceStateId`.
+After selection, run `mantis use get_space_context` again.

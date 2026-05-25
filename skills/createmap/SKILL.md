@@ -1,11 +1,13 @@
 ---
-description: Create a Mantis map from a local CSV or XLSX file using the mantis CLI. Use when the user wants to upload a dataset, configure field types, or turn a CSV into a Mantis map.
+description: Create a Mantis map from a local CSV or XLSX file using the mantis CLI. Run `mantis use get_space_context` first when Mantis is mentioned.
 argument-hint: [csv-or-xlsx-path]
 allowed-tools: Bash, AskUserQuestion
 disable-model-invocation: true
 ---
 
 # Create Mantis Map
+
+First: `mantis use get_space_context` (unless you just ran it this turn).
 
 Use the local `mantis create map` CLI. Prefer passing arguments explicitly so this works for agents and humans.
 
@@ -53,10 +55,10 @@ mantis create map "./dataset.csv" \
   --semantic-column "summary,content"
 ```
 
-5. Report the created space link and map id from the JSON output. If `--activate` was used, tell the user to run `/reload-plugins`.
+5. Report the created space link and map id from the JSON output.
 
 ## Notes
 
 - If the user wants a fully interactive human flow, run only `mantis create map "./dataset.csv"`.
-- If Claude Code is driving the flow, avoid interactive prompts by passing flags.
+- If an agent is driving the flow, avoid interactive prompts by passing flags.
 - Use `mantis setup` first if the CLI says API key or URL is missing.

@@ -1,11 +1,13 @@
 ---
-description: Index a local codebase into a CSV for Mantis, optionally creating and activating a Mantis codebase map. Use when the user wants Claude Code to map a repository or create a codebase CSV.
+description: Index a local codebase into a CSV for Mantis. Run `mantis use get_space_context` first when Mantis is mentioned.
 argument-hint: [repo-path]
 allowed-tools: Bash, AskUserQuestion
 disable-model-invocation: true
 ---
 
 # Create Codebase CSV
+
+First: `mantis use get_space_context` (unless you just ran it this turn).
 
 Use `mantis create codebase`. This command is local-first: it scans files on the user's machine and writes a CSV. It can optionally continue into `mantis create map`.
 
@@ -52,15 +54,15 @@ The command uses good defaults for codebase maps:
 - `categoric`: `language,kind,extension`
 - `numeric`: `loc,bytes`
 
-## After Activation
+## After activation
 
-If `--activate` was used, tell the user to run:
+If `--activate` was used, the new thread is active immediately. Explore with:
 
-```text
-/reload-plugins
+```bash
+mantis use get_space_context
 ```
 
-Then suggest prompts like:
+Example follow-up questions:
 
 ```text
 What are the main architectural zones in this codebase?

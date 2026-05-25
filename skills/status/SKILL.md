@@ -1,20 +1,15 @@
 ---
-description: Show the current Mantis space, thread, and MCP URL from plugin config. Use when checking whether Claude Code is connected to Mantis.
-disable-model-invocation: true
+description: Show current Mantis space, thread, and MCP URL from CLI config. Run `mantis use get_space_context` first when Mantis is mentioned.
 ---
 
 # Mantis status
 
-Run in the terminal:
+First: `mantis use get_space_context` (unless you just ran it this turn).
 
 ```bash
 mantis status
 ```
 
-Or:
+Or JSON-friendly check via config path printed by status.
 
-```bash
-node "${CLAUDE_PLUGIN_ROOT}/bin/mantis.js" status
-```
-
-Report the output to the user. If no thread is set, tell them to run `/mantis:connect` or `mantis setup`, then `/reload-plugins`.
+If no thread is set: `mantis setup` or `mantis select thread`.
