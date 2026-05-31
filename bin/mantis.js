@@ -104,7 +104,7 @@ program
 
   .description('Mantis CLI — spaces, maps, and MCP tools for AI agents')
 
-  .version('3.0.1');
+  .version('3.1.0');
 
 
 
@@ -369,6 +369,8 @@ program
   .description('Call a Mantis MCP tool (prints JSON)')
 
   .allowUnknownOption()
+
+  .allowExcessArguments()
 
   .action(async () => {
 
