@@ -51,11 +51,22 @@ You are NOT a local coding assistant here. There is no repo to grep and no proje
 ### Passing arguments
 
 - Simple scalars can be flags: `--uri "..."`, `--kind cluster`, `--depth 1`. Kebab flags map to snake_case (`--map-id` → `map_id`).
-- **Lists and objects MUST go through `--args '<json>'`** — the CLI only coerces flag values to string/number/bool, so `scope`, `uris`, `category_filters`, etc. cannot be passed as `--flag`. Use one `--args` JSON blob for those (you can mix: `--args` for the lists, plain flags for the scalars).
+- **Lists and objects MUST go through JSON** — the CLI only coerces flag values to string/number/bool, so `scope`, `uris`, `category_filters`, etc. cannot be passed as `--flag`. You can mix: JSON for the lists, plain flags for the scalars.
+
+On macOS/Linux (bash/zsh), pass the JSON inline with `--args`:
 
 ```bash
 mantis use search --args '{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}'
 ```
+
+**On Windows PowerShell, do NOT use inline `--args` — PowerShell strips the inner quotes, so `--args '{"k":"v"}'` reaches the CLI as `{k:v}` and fails with "Expected property name… position 1".** Write the JSON to a file and use `--args-file`:
+
+```bash
+'{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}' | Out-File -Encoding utf8 args.json
+mantis use search --args-file args.json
+```
+
+`--args-file <path>` works in every shell — prefer it whenever the call has a list/object arg and you're unsure of the shell. If `--args` ever errors with "Expected property name… position 1", that's the quote-stripping bug — switch to `--args-file`. (Never just retry with an empty `--args`; the CLI now rejects that, because an empty filter blob would silently bag the entire map.)
 
 Use map IDs, field types, and URIs from `get_space_context` / tool output — never guess them.
 
