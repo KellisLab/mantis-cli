@@ -41,19 +41,109 @@ mantis setup codex      # ~/.agents/skills/ (add --project for ./.agents/skills/
 Every Mantis MCP tool is available through the CLI — no editor MCP plugin required:
 
 ```bash
-mantis tools
-mantis use get_space_context
-mantis use search --query "your search"
+mantis tools                                  # list every tool + its args
+mantis use get_space_context                  # active space + maps (URIs + names)
 mantis use inspect --uri "<mantis-uri>"
 ```
 
-Use `--args '{"key":"value"}'` for complex arguments. Kebab flags map to snake_case (`--map-id` → `map_id`).
+You are NOT a local coding assistant here. There is no repo to grep and no project on disk — **all real work happens through `mantis use <tool>`.** Don't `ls`/`cat`/`find` looking for Mantis data; the data layer is the tools.
 
-Use map IDs, field types, and URIs from the `get_space_context` output — do not guess them.
+### Passing arguments
 
-**Scale the tool to the question.** For descriptive questions ("what's this map about?", "what's in it?"), `get_space_context` plus one or two `inspect` calls is usually enough — `inspect` gives you the name, point/cluster counts, field schema, and cluster theme names. Don't pull row-level data to answer a question about *shape*. Reach for `export` (below) only when the answer genuinely needs many actual rows — distributions, correlations, top-K, outliers.
+- Simple scalars can be flags: `--uri "..."`, `--kind cluster`, `--depth 1`. Kebab flags map to snake_case (`--map-id` → `map_id`).
+- **Lists and objects MUST go through `--args '<json>'`** — the CLI only coerces flag values to string/number/bool, so `scope`, `uris`, `category_filters`, etc. cannot be passed as `--flag`. Use one `--args` JSON blob for those (you can mix: `--args` for the lists, plain flags for the scalars).
 
-Common tools: `get_space_context`, `search`, `inspect`, `compare`, `union`/`intersect`/`diff`, the bag mutators (`create_bag`, `add_to_bag`, `filter_to_bag`, …), `set_plot_variables`, `legend_command`, `create_page`.
+```bash
+mantis use search --args '{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}'
+```
+
+Use map IDs, field types, and URIs from `get_space_context` / tool output — never guess them.
+
+### The URI substrate
+
+Every Mantis entity has a stable `mantis://` URI you copy from one tool's output into the next tool's input:
+
+```
+mantis://space/<space_id>
+mantis://map/<map_id>
+mantis://map/<map_id>/cluster/<cluster_id>
+mantis://map/<map_id>/bag/<bag_name>
+mantis://map/<map_id>/point/<point_id>
+mantis://map/<map_id>/dimensions          # the real, available field names
+mantis://map/<map_id>/selection           # the user's current selection
+```
+
+### Tools come in tiers — read first, reason next, then mutate
+
+**Tier 1 — orient (read):**
+- `inspect --uri <uri> [--depth 1]` — universal read. On a map → top clusters + bags + stats; on a cluster → child clusters (and its points); on `.../dimensions` → the real field names. This answers "what's this map about?" without touching row data.
+
+**Tier 2 — reason (read, no mutation):**
+- `search` with `kind`: `point` (default — searches record text, honors `mode` = `hybrid`|`vector`|`lexical`), `cluster` (fuzzy-match a cluster by its label), `bag` (fuzzy-match a bag by name). **In a multi-map space, always pass `scope=["mantis://map/<id>"]`** or search returns `scope_required`.
+- `compare --args '{"uris":[...],"on":"distribution","field":"<field>"}'` — per-URI stats on a field; single-URI is the canonical "summarize this set on this field" (e.g. "what departments are in this cluster?"). `on:"cluster_labels"` with 2+ map URIs → shared vs unique themes.
+- `intersect` / `diff` / `union` — set algebra over point sets (`--args '{"uris":[...]}'`).
+- `export` — bulk rows to local parquet (see Bulk export below).
+
+**Tier 3 — act (mutate):**
+- `create_bag` (`--from-uri <uri>` — cluster sources are recursive — or `--args '{"point_uris":[...]}'`), `add_to_bag`, `remove_from_bag`, `rename_bag`, `delete_bag`.
+- `filter_to_bag` — structured filters → saved bag (see its own section below).
+- `set_plot_variables`, `legend_command`, `create_page`.
+
+**Field names are validated.** Any tool taking a `field`/`dimension`/`value` (`compare`, `filter_to_bag`, `legend_command`, `set_plot_variables`) returns `{error:"unknown_field", available_fields:[...]}` for a bad column. **Before filtering or comparing on a field, run `inspect --uri "mantis://map/<id>/dimensions"` to get the real field names and their values — do not invent them, and do not `export` just to discover what a column's values look like.**
+
+### Resolve names → URIs the fast way
+
+To act on "the X cluster" or "the Y bag", resolve the name with `search`, then drill in — **don't walk the tree** with repeated `inspect` calls:
+
+```bash
+# "Bag the Agent-Platform Integration cluster"
+mantis use inspect --uri "mantis://map/<id>"                                                   # confirm the map
+mantis use search --args '{"query":"Agent-Platform Integration","kind":"cluster","scope":["mantis://map/<id>"]}'   # → cluster_uri
+mantis use create_bag --from-uri "<cluster_uri>" --name "Agent-Platform"
+```
+
+For making bags, see **Building bags** below — pick `filter_to_bag` vs `create_bag` first.
+
+**Scale the tool to the question.** Descriptive questions ("what's this map about?", "what's in it?") are answered by `get_space_context` + one or two `inspect` calls — name, counts, field schema, cluster themes. Don't pull row-level data to describe *shape*. Reach for `export` only when the answer needs many actual rows (distributions, correlations, top-K, outliers).
+
+### Building bags — `filter_to_bag` vs `create_bag`
+
+To make a bag, first decide which tool fits — getting this wrong is the most common bag mistake:
+
+- **All members share a field value** ("only markdown files", "score > 0.7", "from 2022") → **`filter_to_bag`** in one call. Do NOT export rows and collect point IDs by hand.
+- **Arbitrary set with no common field** (a specific `.md` plus three particular `.js` files) → **`create_bag`** with `point_uris`, or `create_bag --from-uri <cluster_uri>` for a whole cluster.
+
+`filter_to_bag` takes **exactly** these filter arrays (there is no `--filter` flag — passing `{"extension":"md"}` is wrong). All active filters are ANDed; `scope` is applied first. Field names are validated — a typo returns `available_fields`.
+
+```jsonc
+// category_filters — case-insensitive exact match on a categoric field
+{"field": "<col>", "values": ["md", "mdx"]}
+// numeric_filters — range; omit min or max for an open bound
+{"field": "<col>", "min": 10, "max": 50}
+// date_filters — ISO-8601; "after"/"before", either or both
+{"field": "<col>", "after": "2022-01-01", "before": "2023-12-31"}
+```
+
+```bash
+# "bag only the markdown files"  (one shared field value → filter_to_bag)
+mantis use inspect --uri "mantis://map/<id>/dimensions"     # confirm field `extension` and that "md" is a value
+mantis use filter_to_bag --args '{"scope":"mantis://map/<id>","category_filters":[{"field":"extension","values":["md"]}],"name":"Markdown Files"}'
+
+# "bag this README plus its three helper scripts"  (arbitrary mix → create_bag)
+mantis use create_bag --args '{"point_uris":["mantis://map/<id>/point/<p1>","mantis://map/<id>/point/<p2>"],"name":"README + helpers"}'
+```
+
+`scope` accepts a full map / cluster / bag / selection URI (cluster scope is recursive); bare names are rejected — pass the URI. Use `recency_days` / `recency_hours` as a shortcut for "last N days/hours".
+
+### Anti-patterns (don't)
+
+- `ls` / `cat` / `find` / reading files to find Mantis context — there's no repo; use the tools.
+- Guessing IDs or URIs — always copy them from a previous tool's output.
+- Walking the cluster tree with `inspect` to find a cluster/bag by name — use `search --kind cluster|bag`.
+- Inventing field names — `inspect .../dimensions` first.
+- `export`-ing a whole map (then crunching pandas) just to learn a column's values or to see a few example rows — that's what `inspect .../dimensions` and `compare(distribution)` are for.
+- `search` without `scope` in a multi-map space — it returns `scope_required`.
+- Looping `inspect` over individual points to summarize a field — one `compare(..., on:"distribution", field:...)` does it.
 
 Not available via `mantis use`:
 - `create_space`, `create_map_from_url`, `modify_map_from_url` — use `mantis setup` / `mantis create map` instead.
