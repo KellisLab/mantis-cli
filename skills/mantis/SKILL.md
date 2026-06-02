@@ -51,6 +51,8 @@ Use `--args '{"key":"value"}'` for complex arguments. Kebab flags map to snake_c
 
 Use map IDs, field types, and URIs from the `get_space_context` output — do not guess them.
 
+**Scale the tool to the question.** For descriptive questions ("what's this map about?", "what's in it?"), `get_space_context` plus one or two `inspect` calls is usually enough — `inspect` gives you the name, point/cluster counts, field schema, and cluster theme names. Don't pull row-level data to answer a question about *shape*. Reach for `export` (below) only when the answer genuinely needs many actual rows — distributions, correlations, top-K, outliers.
+
 Common tools: `get_space_context`, `search`, `inspect`, `compare`, `union`/`intersect`/`diff`, the bag mutators (`create_bag`, `add_to_bag`, `filter_to_bag`, …), `set_plot_variables`, `legend_command`, `create_page`.
 
 Not available via `mantis use`:
@@ -60,7 +62,7 @@ Not available via `mantis use`:
 
 ## Bulk export (local parquet)
 
-`mantis use export` resolves a URI to its rows and writes a local parquet file under `~/.mantis/mantis_data/`. Use it when a question needs MANY rows (correlations, distributions, top-K, outliers) instead of paging `inspect`:
+`mantis use export` resolves a URI to its rows and writes a local parquet file under `~/.mantis/mantis_data/`. It pulls the **entire** point set (no row limit — capped only at 200,000), so use it only when a question genuinely needs MANY rows: correlations, distributions, top-K, outliers. For "what is this map" / "what's in it", prefer `inspect` — do **not** export just to see example rows. Narrow the URI to a cluster when you can.
 
 ```bash
 mantis use export --uri "mantis://map/<id>"                                  # all rows
