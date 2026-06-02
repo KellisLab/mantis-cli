@@ -1,6 +1,6 @@
 {
   "name": "mantisai-cli",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "description": "Mantis CLI — spaces, maps, and MCP tools for AI coding agents",
   "type": "module",
   "license": "MIT",

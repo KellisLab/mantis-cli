@@ -53,20 +53,15 @@ You are NOT a local coding assistant here. There is no repo to grep and no proje
 - Simple scalars can be flags: `--uri "..."`, `--kind cluster`, `--depth 1`. Kebab flags map to snake_case (`--map-id` → `map_id`).
 - **Lists and objects MUST go through JSON** — the CLI only coerces flag values to string/number/bool, so `scope`, `uris`, `category_filters`, etc. cannot be passed as `--flag`. You can mix: JSON for the lists, plain flags for the scalars.
 
-On macOS/Linux (bash/zsh), pass the JSON inline with `--args`:
+Pass the JSON inline with `--args`:
 
 ```bash
 mantis use search --args '{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}'
 ```
 
-**On Windows PowerShell, do NOT use inline `--args` — PowerShell strips the inner quotes, so `--args '{"k":"v"}'` reaches the CLI as `{k:v}` and fails with "Expected property name… position 1".** Write the JSON to a file and use `--args-file`:
+This works in every shell. The CLI is tolerant of shell mangling — it recovers PowerShell's quote-stripping (where `--args '{"k":"v"}'` arrives as `{k:v}`) and BOM/UTF‑16 artifacts automatically, so you do **not** need to escape quotes or pick a shell-specific form. Just write the JSON normally.
 
-```bash
-'{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}' | Out-File -Encoding utf8 args.json
-mantis use search --args-file args.json
-```
-
-`--args-file <path>` works in every shell — prefer it whenever the call has a list/object arg and you're unsure of the shell. If `--args` ever errors with "Expected property name… position 1", that's the quote-stripping bug — switch to `--args-file`. (Never just retry with an empty `--args`; the CLI now rejects that, because an empty filter blob would silently bag the entire map.)
+For very large or awkward payloads you can instead write the JSON to a file and pass `--args-file <path>` (BOMs and UTF‑16 are handled). Either way, never pass an empty `--args` — the CLI rejects an empty blob, because on a mutating tool like `filter_to_bag` "no filter" means *match everything* and would bag the whole map.
 
 Use map IDs, field types, and URIs from `get_space_context` / tool output — never guess them.
 
