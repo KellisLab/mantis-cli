@@ -5,7 +5,18 @@ description: Work with MIT Mantis spaces, maps, clusters, and notebooks via the 
 
 # Mantis
 
-Mantis is a spatial data workspace: **spaces** contain **maps**, **clusters**, **bags**, and **notebooks**.
+Mantis is a spatial data workspace. It embeds records — rows of a dataset, documents, code files, anything with text — into a 2D semantic map where **proximity means similarity**. Related records land near each other, and Mantis groups them into labelled **clusters** so the shape of a dataset is visible at a glance.
+
+The core entities:
+
+- **Space** — a workspace. Contains one or more maps and the threads (saved states) over them.
+- **Map** — a single embedded dataset: points (records) laid out in 2D, with typed **fields** (semantic / categoric / numeric / date) and a cluster hierarchy.
+- **Cluster** — an auto-generated, labelled group of nearby points. Clusters nest (a cluster has child clusters and, at the leaves, points).
+- **Bag** — a named, user-defined set of points you build by filtering or hand-picking. The unit of "save this subset to come back to."
+- **Point** — one record on the map.
+- **Thread (space state)** — a saved view/state of a space; the active one scopes what your commands operate on.
+
+You explore a map by reading its clusters and field schema, narrow to the points you care about with search and filters, save them as bags, and pull rows out only when a question needs the underlying data.
 
 ## First step
 
@@ -15,15 +26,14 @@ Run this **before any other Mantis command or tool** (skip only if you already r
 mantis use get_space_context
 ```
 
-If it fails with no thread configured, run `mantis setup` or `mantis select thread`, then retry.
+If it fails with no thread configured, run `mantis setup` or `mantis select`, then retry.
 
 ## Setup
 
 ```bash
 mantis setup          # API key + space + thread (only prompts what's missing)
 mantis status
-mantis select space
-mantis select thread
+mantis select         # switch the active space and/or thread
 ```
 
 Config lives at `~/.mantis/config.json`.
@@ -46,7 +56,7 @@ mantis use get_space_context                  # active space + maps (URIs + name
 mantis use inspect --uri "<mantis-uri>"
 ```
 
-You are NOT a local coding assistant here. There is no repo to grep and no project on disk — **all real work happens through `mantis use <tool>`.** Don't `ls`/`cat`/`find` looking for Mantis data; the data layer is the tools.
+Mantis data lives on the server, not on disk — **all work on a map happens through `mantis use <tool>`.** Reach for a tool to inspect, search, and mutate Mantis entities; the data layer is the tools, addressed by `mantis://` URIs.
 
 ### Passing arguments
 
@@ -143,7 +153,7 @@ mantis use create_bag --args '{"point_uris":["mantis://map/<id>/point/<p1>","man
 
 ### Anti-patterns (don't)
 
-- `ls` / `cat` / `find` / reading files to find Mantis context — there's no repo; use the tools.
+- Looking on disk for Mantis data — it lives on the server; use the tools.
 - Guessing IDs or URIs — always copy them from a previous tool's output.
 - Walking the cluster tree with `inspect` to find a cluster/bag by name — use `search --kind cluster|bag`.
 - Inventing field names — `inspect .../dimensions` first.
@@ -189,4 +199,4 @@ API keys: https://mantis.csail.mit.edu/developer/#keys
 ## Conventions
 
 - Refer to spaces and maps by **name** in user-facing text; use UUIDs in tool arguments.
-- After `mantis select space` or `mantis select thread`, the next `mantis use` picks up the new context automatically — no reload step.
+- After `mantis select` (or `mantis spaces set` / `mantis threads set`), the next `mantis use` picks up the new context automatically — no reload step.
