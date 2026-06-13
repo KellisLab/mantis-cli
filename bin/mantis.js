@@ -129,7 +129,7 @@ program
 
   .command('setup [provider]')
 
-  .description('Configure Mantis, or install skills for claude/opencode/codex')
+  .description('Configure Mantis, or install skills for claude/opencode/codex/cursor/windsurf/copilot/antigravity')
 
   .option('--project', 'Also sync repo-scoped skills (Codex: ./.agents/skills/)')
 

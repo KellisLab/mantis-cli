@@ -34,7 +34,7 @@ Config: `~/.mantis/config.json`
 
 | Command | Description |
 | --- | --- |
-| `mantis setup [claude\|opencode\|codex]` | API + space/thread, or sync editor skills |
+| `mantis setup [claude\|opencode\|codex\|cursor\|windsurf\|copilot\|antigravity]` | API + space/thread, or sync editor skills |
 | `mantis status` | Current config |
 | `mantis select [space\|thread\|both]` | Switch space/thread |
 | `mantis spaces list\|resolve\|set` | Scriptable space ops (JSON) |

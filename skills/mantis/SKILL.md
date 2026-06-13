@@ -41,9 +41,13 @@ Config lives at `~/.mantis/config.json`.
 Install editor skills (CLI-only workflow, no MCP plugin):
 
 ```bash
-mantis setup claude     # ~/.claude/skills/
-mantis setup opencode   # ~/.config/opencode/skills/ + .opencode/skills/
-mantis setup codex      # ~/.agents/skills/ (add --project for ./.agents/skills/)
+mantis setup claude       # ~/.claude/skills/
+mantis setup opencode     # ~/.config/opencode/skills/ + .opencode/skills/
+mantis setup codex        # ~/.agents/skills/ (add --project for ./.agents/skills/)
+mantis setup cursor       # ~/.cursor/skills/
+mantis setup windsurf     # ~/.codeium/windsurf/skills/
+mantis setup copilot      # ~/.copilot/skills/
+mantis setup antigravity  # ~/.agents/skills/ + ./.agents/skills/
 ```
 
 ## MCP tools via CLI
