@@ -67,17 +67,17 @@ Mantis data lives on the server, not on disk — **all work on a map happens thr
 - Simple scalars can be flags: `--uri "..."`, `--kind cluster`, `--depth 1`. Kebab flags map to snake_case (`--map-id` → `map_id`).
 - **Lists and objects MUST go through JSON** — the CLI only coerces flag values to string/number/bool, so `scope`, `uris`, `category_filters`, etc. cannot be passed as `--flag`.
 
-**For any JSON payload, pipe it in on stdin — this is the default and the form you should reach for.** The JSON travels through stdin, so the shell never parses it and cannot strip its quotes. No escaping, no shell-specific quoting, works the same everywhere. Just pipe into `mantis use <tool>` (no flag needed):
+**For any JSON payload, pipe it in with `--args-stdin` — this is the default and the form you should reach for.** The JSON travels through stdin, so the shell never parses it and cannot strip its quotes. No escaping, no shell-specific quoting, works the same everywhere:
 
 ```bash
-echo '{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}' | mantis use search
+echo '{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}' | mantis use search --args-stdin
 
-echo '{"uris":["mantis://map/<id>"],"on":"distribution","field":"<field>"}' | mantis use compare
+echo '{"uris":["mantis://map/<id>"],"on":"distribution","field":"<field>"}' | mantis use compare --args-stdin
 ```
 
-Write the JSON normally inside the single quotes — don't escape the inner `"`. (You can also pass `--args-stdin` explicitly to force stdin reading; piping alone is enough.)
+Write the JSON normally inside the single quotes — don't escape the inner `"`. The `--args-stdin` flag is required to read stdin (a bare `mantis use <tool>` never reads stdin, so it can't hang in an interactive terminal).
 
-Avoid inline `--args '{...}'`: on PowerShell/cmd the shell mangles the quotes *before* the CLI sees the blob (it can collapse `{...}` down to `{\}`), and once that happens the data is gone — escaping harder won't help. The CLI still accepts `--args` and recovers what it can (quote-stripping, BOM/UTF‑16), and it **detects unrecoverable mangling and stops with a clear error** rather than forwarding garbage — but piping sidesteps the whole problem, so prefer it. For very large payloads, `--args-file <path>` is an equivalent quote-proof alternative.
+Avoid inline `--args '{...}'`: on PowerShell/cmd the shell mangles the quotes *before* the CLI sees the blob (it can collapse `{...}` down to `{\}`), and once that happens the data is gone — escaping harder won't help. The CLI still accepts `--args` and recovers what it can (quote-stripping, BOM/UTF‑16), and it **detects unrecoverable mangling and stops with a clear error** rather than forwarding garbage — but `--args-stdin` sidesteps the whole problem, so prefer it. For very large payloads, `--args-file <path>` is an equivalent quote-proof alternative.
 
 Never pass empty args — the CLI rejects an empty blob, because on a mutating tool like `filter_to_bag` "no filter" means *match everything* and would bag the whole map.
 
@@ -122,7 +122,7 @@ To act on "the X cluster" or "the Y bag", resolve the name with `search`, then d
 ```bash
 # "Bag the Agent-Platform Integration cluster"
 mantis use inspect --uri "mantis://map/<id>"                                                   # confirm the map
-echo '{"query":"Agent-Platform Integration","kind":"cluster","scope":["mantis://map/<id>"]}' | mantis use search   # → cluster_uri
+echo '{"query":"Agent-Platform Integration","kind":"cluster","scope":["mantis://map/<id>"]}' | mantis use search --args-stdin   # → cluster_uri
 mantis use create_bag --from-uri "<cluster_uri>" --name "Agent-Platform"
 ```
 
@@ -151,10 +151,10 @@ To make a bag, first decide which tool fits — getting this wrong is the most c
 ```bash
 # "bag only the markdown files"  (one shared field value → filter_to_bag)
 mantis use inspect --uri "mantis://map/<id>/dimensions"     # confirm field `extension` and that "md" is a value
-echo '{"scope":"mantis://map/<id>","category_filters":[{"field":"extension","values":["md"]}],"name":"Markdown Files"}' | mantis use filter_to_bag
+echo '{"scope":"mantis://map/<id>","category_filters":[{"field":"extension","values":["md"]}],"name":"Markdown Files"}' | mantis use filter_to_bag --args-stdin
 
 # "bag this README plus its three helper scripts"  (arbitrary mix → create_bag)
-echo '{"point_uris":["mantis://map/<id>/point/<p1>","mantis://map/<id>/point/<p2>"],"name":"README + helpers"}' | mantis use create_bag
+echo '{"point_uris":["mantis://map/<id>/point/<p1>","mantis://map/<id>/point/<p2>"],"name":"README + helpers"}' | mantis use create_bag --args-stdin
 ```
 
 `scope` accepts a full map / cluster / bag / selection URI (cluster scope is recursive); bare names are rejected — pass the URI. Use `recency_days` / `recency_hours` as a shortcut for "last N days/hours".
