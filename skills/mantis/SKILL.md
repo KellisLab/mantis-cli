@@ -73,9 +73,19 @@ Pass the JSON inline with `--args`:
 mantis use search --args '{"query":"System Performance","kind":"cluster","scope":["mantis://map/<id>"]}'
 ```
 
-This works in every shell. The CLI is tolerant of shell mangling — it recovers PowerShell's quote-stripping (where `--args '{"k":"v"}'` arrives as `{k:v}`) and BOM/UTF‑16 artifacts automatically, so you do **not** need to escape quotes or pick a shell-specific form. Just write the JSON normally.
+This works in most shells. The CLI is tolerant of shell mangling — it recovers PowerShell's quote-stripping (where `--args '{"k":"v"}'` arrives as `{k:v}`) and BOM/UTF‑16 artifacts automatically, so you usually do **not** need to escape quotes or pick a shell-specific form. Just write the JSON normally.
 
-For very large or awkward payloads you can instead write the JSON to a file and pass `--args-file <path>` (BOMs and UTF‑16 are handled). Either way, never pass an empty `--args` — the CLI rejects an empty blob, because on a mutating tool like `filter_to_bag` "no filter" means *match everything* and would bag the whole map.
+If a shell mangles the blob so badly the content is lost (PowerShell/cmd sometimes collapse `--args '{...}'` down to `{\}`), the CLI **detects it and stops with a clear error** rather than forwarding garbage — and tells you to switch to one of the two quote-proof forms below. When that happens, don't try to escape harder (the data is already gone); use a form that keeps the JSON out of the shell's argument splitter:
+
+```bash
+# pipe the JSON in via stdin — the shell never parses it
+echo '{"uris":["mantis://map/<id>"],"on":"distribution","field":"<field>"}' | mantis use compare --args-stdin
+
+# or write it to a file and pass the path (BOMs and UTF-16 handled)
+mantis use compare --args-file args.json
+```
+
+Never pass an empty `--args` — the CLI rejects an empty blob, because on a mutating tool like `filter_to_bag` "no filter" means *match everything* and would bag the whole map.
 
 Use map IDs, field types, and URIs from `get_space_context` / tool output — never guess them.
 
