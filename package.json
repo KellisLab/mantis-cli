@@ -25,12 +25,15 @@
     "fast-glob": "^3.3.3"
   },
   "bin": {
-    "mantis": "bin/mantis.js"
+    "mantis": "dist/mantis.js"
+  },
+  "scripts": {
+    "build": "bun build bin/mantis.js --target=node --outfile=dist/mantis.js",
+    "prepublishOnly": "bun run build"
   },
   "files": [
     "skills",
-    "bin",
-    "lib",
+    "dist",
     "LICENSE",
     "README.md"
   ],
