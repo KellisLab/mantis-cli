@@ -52,6 +52,14 @@ Config lives at `~/.mantis/config.json`. Grab a developer key at **[mantis.csail
 
 > **Naming:** repo [`KellisLab/mantis-cli`](https://github.com/KellisLab/mantis-cli) · npm package **`mantisai-cli`** · binary **`mantis`**.
 
+## Using with [Claude Code](https://github.com/anthropics/claude-code)
+
+Run `mantis setup claude` once to install the Mantis skills, then drive your spaces and maps straight from a Claude Code session, no MCP plugin required.
+
+https://github.com/KellisLab/mantis-cli/raw/main/assets/claude-code-demo.mp4
+
+See the [Claude Code guide](https://mantis.csail.mit.edu/docs/mantis-cli/claude-code.html) for the full workflow.
+
 ## Commands
 
 | Command | Description |
