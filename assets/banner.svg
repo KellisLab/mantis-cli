@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58 14" width="100%" height="100%" style="background-color: #131313;">
   <defs>
+    <!-- Sharp horizontal gradient exactly matching the 7-block height pixel bands -->
     <linearGradient id="retroGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="28.57%" stop-color="#FFD400" />
       <stop offset="28.57%" stop-color="#E89500" />
@@ -7,23 +8,24 @@
       <stop offset="71.43%" stop-color="#C27A41" />
     </linearGradient>
 
+    <!-- Path definitions for 5x7 blocky pixel art letters -->
     <path id="char-M" d="M 0 0 H 1 V 1 H 2 V 2 H 3 V 1 H 4 V 0 H 5 V 7 H 4 V 2 H 3 V 3 H 2 V 2 H 1 V 7 H 0 Z" />
-    
     <path id="char-A" d="M 1 0 H 4 V 1 H 5 V 7 H 4 V 4 H 1 V 7 H 0 V 1 H 1 Z M 1 1 V 3 H 4 V 1 H 1 Z" />
-    
     <path id="char-N" d="M 0 0 H 1 V 1 H 2 V 2 H 3 V 3 H 4 V 0 H 5 V 7 H 4 V 4 H 3 V 3 H 2 V 2 H 1 V 7 H 0 Z" />
-    
     <path id="char-T" d="M 0 0 H 5 V 1 H 3 V 7 H 2 V 1 H 0 Z" />
-    
     <path id="char-I" d="M 0 0 H 3 V 1 H 2 V 6 H 3 V 7 H 0 V 6 H 1 V 1 H 0 Z" />
     
-    <path id="char-S" d="M 1 0 H 5 V 6 H 4 V 7 H 0 V 6 H 4 V 4 H 1 V 3 H 0 V 1 H 1 Z" />
+    <!-- S: Fixed to a clean 5x7 blocky pixel path without intersections -->
+    <path id="char-S" d="M 0 0 H 5 V 1 H 1 V 3 H 5 V 7 H 0 V 6 H 4 V 4 H 0 Z" />
     
-    <path id="char-C" d="M 1 0 H 5 V 2 H 4 V 1 H 1 V 6 H 4 V 5 H 5 V 7 H 1 V 6 H 0 V 1 H 1 Z" />
+    <!-- C: Fixed path logic to prevent backtracking lines -->
+    <path id="char-C" d="M 0 0 H 5 V 2 H 4 V 1 H 1 V 6 H 4 V 5 H 5 V 7 H 0 Z" />
     
     <path id="char-L" d="M 0 0 H 1 V 6 H 5 V 7 H 0 Z" />
 
+    <!-- Combine letters into the final wordmark group -->
     <g id="wordmark" fill-rule="evenodd">
+      <!-- M A N T I S -->
       <use href="#char-M" x="0" />
       <use href="#char-A" x="6" />
       <use href="#char-N" x="12" />
@@ -31,6 +33,7 @@
       <use href="#char-I" x="24" />
       <use href="#char-S" x="28" />
       
+      <!-- C L I (Starts after a 4-unit space gap) -->
       <use href="#char-C" x="37" />
       <use href="#char-L" x="43" />
       <use href="#char-I" x="49" />
@@ -38,11 +41,13 @@
   </defs>
 
   <g transform="translate(3, 3)">
+    <!-- Echo / Stroke layers behind the main text -->
     <use href="#wordmark" x="0.3" y="0.3" fill="none" stroke="url(#retroGrad)" stroke-width="0.15" stroke-linejoin="miter" stroke-linecap="square" />
     <use href="#wordmark" x="0.6" y="0.6" fill="none" stroke="url(#retroGrad)" stroke-width="0.15" stroke-linejoin="miter" stroke-linecap="square" />
     <use href="#wordmark" x="0.9" y="0.9" fill="none" stroke="url(#retroGrad)" stroke-width="0.15" stroke-linejoin="miter" stroke-linecap="square" />
     <use href="#wordmark" x="1.2" y="1.2" fill="none" stroke="url(#retroGrad)" stroke-width="0.15" stroke-linejoin="miter" stroke-linecap="square" />
 
+    <!-- Main solid front text -->
     <use href="#wordmark" x="0" y="0" fill="url(#retroGrad)" />
   </g>
 </svg>
