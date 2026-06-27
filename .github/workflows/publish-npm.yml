@@ -23,6 +23,12 @@ jobs:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
+      # Bun is needed for the build step (prepublishOnly -> bun build).
+      # Runtime/install never needs Bun; this is build-time only.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Set version from tag
         run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
 
