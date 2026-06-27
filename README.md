@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://mantis.csail.mit.edu/docs/mantis-cli/index.html">Docs</a> ·
+  <a href="https://mantis.csail.mit.edu/docs/mantis-cli/">Docs</a> ·
   <a href="https://www.npmjs.com/package/mantisai-cli">npm</a> ·
   <a href="https://mantis.csail.mit.edu/developer/#keys">Get an API key</a> ·
   <a href="https://github.com/KellisLab/mantis-cli/issues">Issues</a>
@@ -89,9 +89,9 @@ mantis use create_bag --from-uri "mantis://map/<id>/cluster/<cid>" --name "My Ba
 
 ## Documentation
 
-- [Overview](https://mantis.csail.mit.edu/docs/mantis-cli/index.html)
-- [Install](https://mantis.csail.mit.edu/docs/mantis-cli/install/index.html)
-- [Claude Code](https://mantis.csail.mit.edu/docs/mantis-cli/claude-code/index.html) · [OpenCode](https://mantis.csail.mit.edu/docs/mantis-cli/opencode/index.html) · [Codex](https://mantis.csail.mit.edu/docs/mantis-cli/codex/index.html)
+- [Overview](https://mantis.csail.mit.edu/docs/mantis-cli/)
+- [Install](https://mantis.csail.mit.edu/docs/mantis-cli/install.html)
+- [Claude Code](https://mantis.csail.mit.edu/docs/mantis-cli/claude-code.html) · [OpenCode](https://mantis.csail.mit.edu/docs/mantis-cli/opencode.html) · [Codex](https://mantis.csail.mit.edu/docs/mantis-cli/codex.html)
 
 ## Requirements
 
