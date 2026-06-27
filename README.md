@@ -56,7 +56,9 @@ Config lives at `~/.mantis/config.json`. Grab a developer key at **[mantis.csail
 
 Run `mantis setup claude` once to install the Mantis skills, then drive your spaces and maps straight from a Claude Code session, no MCP plugin required.
 
-https://github.com/KellisLab/mantis-cli/raw/main/assets/claude-code-demo.mp4
+<p align="center">
+  <video src="https://github.com/KellisLab/mantis-cli/raw/main/assets/claude-code-demo.mp4" width="720" controls muted autoplay loop></video>
+</p>
 
 See the [Claude Code guide](https://mantis.csail.mit.edu/docs/mantis-cli/claude-code.html) for the full workflow.
 
