@@ -22,6 +22,10 @@
   <a href="https://mantis.csail.mit.edu"><img src="https://img.shields.io/badge/Built%20at-MIT%20CSAIL-A31F34?style=for-the-badge" alt="Built at MIT CSAIL"></a>
 </p>
 
+<p align="center">
+  <img src="assets/overview-demo.gif" alt="Mantis CLI overview" width="760">
+</p>
+
 ---
 
 **Mantis is a spatial data workspace.** It embeds records (dataset rows, documents, code files, anything with text) into a 2D semantic map where **proximity means similarity**, then auto-groups them into labelled clusters so the shape of a dataset is visible at a glance.
