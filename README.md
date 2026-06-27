@@ -30,7 +30,7 @@ This CLI puts the whole workspace in your terminal. Every Mantis MCP tool is rea
 
 <table>
 <tr><td><b>🧰 Full MCP surface</b></td><td>Every Mantis tool via <code>mantis use &lt;tool&gt;</code>: inspect, search, compare, set algebra, bags, pages, export. JSON in, JSON out. No MCP plugin needed.</td></tr>
-<tr><td><b>🤖 Agent skill sync</b></td><td>One command installs editor skills for Claude Code, OpenCode, Codex, Cursor, Windsurf, Copilot, and Antigravity.</td></tr>
+<tr><td><b>🤖 Agent skill sync</b></td><td>One command installs editor skills for <a href="https://github.com/anthropics/claude-code">Claude Code</a>, <a href="https://github.com/sst/opencode">OpenCode</a>, <a href="https://github.com/openai/codex">Codex</a>, <a href="https://cursor.com">Cursor</a>, <a href="https://windsurf.com">Windsurf</a>, <a href="https://github.com/features/copilot">Copilot</a>, and <a href="https://antigravity.google">Antigravity</a>.</td></tr>
 <tr><td><b>🔗 URI substrate</b></td><td>Every entity has a stable <code>mantis://</code> URI you pipe from one tool into the next: spaces, maps, clusters, bags, points, dimensions.</td></tr>
 <tr><td><b>📦 Build maps locally</b></td><td>Turn a CSV/XLSX into a Mantis map, or index an entire codebase into a searchable semantic map in one call.</td></tr>
 <tr><td><b>⚡ Fast cold start</b></td><td>Ships as a single bundled artifact, ~2.5× faster startup than an unbundled install. Bundled with Bun, runs on plain Node.</td></tr>
