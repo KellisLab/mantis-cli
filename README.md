@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Mantis CLI" width="460">
+  <img src="assets/banner.png" alt="Mantis CLI" width="680">
 </p>
 
 <p align="center">
