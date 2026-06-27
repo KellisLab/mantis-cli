@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <b>Spaces, maps, and MCP tools for AI coding agents — straight from your terminal.</b>
+  <b>Spaces, maps, and MCP tools for AI coding agents, straight from your terminal.</b>
 </p>
 
 <p align="center">
@@ -24,17 +24,17 @@
 
 ---
 
-**Mantis is a spatial data workspace** — it embeds records (dataset rows, documents, code files, anything with text) into a 2D semantic map where **proximity means similarity**, then auto-groups them into labelled clusters so the shape of a dataset is visible at a glance.
+**Mantis is a spatial data workspace.** It embeds records (dataset rows, documents, code files, anything with text) into a 2D semantic map where **proximity means similarity**, then auto-groups them into labelled clusters so the shape of a dataset is visible at a glance.
 
-This CLI puts the whole workspace in your terminal. Every Mantis MCP tool is reachable through `mantis use <tool>` — **no editor plugin required** — so AI coding agents (Claude Code, OpenCode, Codex, Cursor, and more) can inspect, search, and reshape spatial data directly.
+This CLI puts the whole workspace in your terminal. Every Mantis MCP tool is reachable through `mantis use <tool>` (**no editor plugin required**), so AI coding agents (Claude Code, OpenCode, Codex, Cursor, and more) can inspect, search, and reshape spatial data directly.
 
 <table>
-<tr><td><b>🧰 Full MCP surface</b></td><td>Every Mantis tool via <code>mantis use &lt;tool&gt;</code> — inspect, search, compare, set algebra, bags, pages, export. JSON in, JSON out. No MCP plugin needed.</td></tr>
+<tr><td><b>🧰 Full MCP surface</b></td><td>Every Mantis tool via <code>mantis use &lt;tool&gt;</code>: inspect, search, compare, set algebra, bags, pages, export. JSON in, JSON out. No MCP plugin needed.</td></tr>
 <tr><td><b>🤖 Agent skill sync</b></td><td>One command installs editor skills for Claude Code, OpenCode, Codex, Cursor, Windsurf, Copilot, and Antigravity.</td></tr>
-<tr><td><b>🔗 URI substrate</b></td><td>Every entity has a stable <code>mantis://</code> URI you pipe from one tool into the next — spaces, maps, clusters, bags, points, dimensions.</td></tr>
+<tr><td><b>🔗 URI substrate</b></td><td>Every entity has a stable <code>mantis://</code> URI you pipe from one tool into the next: spaces, maps, clusters, bags, points, dimensions.</td></tr>
 <tr><td><b>📦 Build maps locally</b></td><td>Turn a CSV/XLSX into a Mantis map, or index an entire codebase into a searchable semantic map in one call.</td></tr>
-<tr><td><b>⚡ Fast cold start</b></td><td>Ships as a single bundled artifact — ~2.5× faster startup than an unbundled install. Bundled with Bun, runs on plain Node.</td></tr>
-<tr><td><b>🔍 Scriptable</b></td><td>Spaces, threads, and tools all emit JSON — drop it straight into <code>jq</code>, pipelines, or agent loops.</td></tr>
+<tr><td><b>⚡ Fast cold start</b></td><td>Ships as a single bundled artifact, ~2.5× faster startup than an unbundled install. Bundled with Bun, runs on plain Node.</td></tr>
+<tr><td><b>🔍 Scriptable</b></td><td>Spaces, threads, and tools all emit JSON. Drop it straight into <code>jq</code>, pipelines, or agent loops.</td></tr>
 </table>
 
 ---
@@ -42,7 +42,7 @@ This CLI puts the whole workspace in your terminal. Every Mantis MCP tool is rea
 ## Quick Start
 
 ```bash
-npm install -g mantisai-cli      # Node ≥18 — no Bun needed
+npm install -g mantisai-cli      # Node ≥18, no Bun needed
 mantis setup                     # API key + space + thread
 mantis setup claude              # optional: install Claude Code skills
 mantis use get_space_context     # confirm you're connected
@@ -62,7 +62,7 @@ Config lives at `~/.mantis/config.json`. Grab a developer key at **[mantis.csail
 | `mantis spaces list\|resolve\|set` | Scriptable space ops (JSON) |
 | `mantis threads list\|new\|set` | Scriptable thread ops (JSON) |
 | `mantis tools` | List every MCP tool and its arguments |
-| `mantis use <tool>` | Call any MCP tool — JSON output |
+| `mantis use <tool>` | Call any MCP tool (JSON output) |
 | `mantis create map <file>` | Build a map from a local CSV/XLSX |
 | `mantis create codebase [root]` | Index a repo into CSV; add `--create-map` to embed it |
 
@@ -95,7 +95,7 @@ mantis use create_bag --from-uri "mantis://map/<id>/cluster/<cid>" --name "My Ba
 
 ## Requirements
 
-- **Node.js 18+** (the only runtime dependency — Bun is used to build, never to run)
+- **Node.js 18+** (the only runtime dependency; Bun is used to build, never to run)
 - A Mantis **API + Developer key** → [mantis.csail.mit.edu/developer](https://mantis.csail.mit.edu/developer/#keys)
 
 ## Contributing
