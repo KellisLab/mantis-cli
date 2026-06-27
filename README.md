@@ -1,4 +1,6 @@
-<h1 align="center">Mantis CLI 🗺️</h1>
+<p align="center">
+  <img src="assets/banner.png" alt="Mantis CLI" width="460">
+</p>
 
 <p align="center">
   <b>Spaces, maps, and MCP tools for AI coding agents — straight from your terminal.</b>
