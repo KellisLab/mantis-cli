@@ -28,6 +28,18 @@ mantis use get_space_context
 
 If it fails with no thread configured, run `mantis setup` or `mantis select`, then retry.
 
+## Companion skills
+
+This `/mantis` skill is the hub for exploring and reshaping **existing** maps. Three companion skills cover the build-and-switch workflows — reach for one when the task matches, then come back here to work the map:
+
+| Skill | Reach for it when | Core usage |
+|-------|-------------------|------------|
+| `/mantis-select` | Switching the active space or thread before doing work | Resolve a name → UUID, then `mantis spaces set` / `mantis threads set`. Non-interactive; never opens the blocking picker. |
+| `/mantis-createmap` | Turning a local CSV into a Mantis map | `mantis create map <file.csv>` with `--<type>-column` flags (title / semantic / categoric / numeric / date …) to type each field. |
+| `/mantis-codebase` | Indexing a repo into a searchable semantic map | `mantis create codebase <root> [--create-map]` — scans files to a CSV, then optionally embeds it as a map in one call. |
+
+`/mantis-select` is safe to invoke directly. `/mantis-createmap` and `/mantis-codebase` are user-facing slash commands that won't auto-trigger — when you're driving the flow yourself, just run the underlying `mantis create map` / `mantis create codebase` commands (documented under [REST via CLI](#rest-via-cli-setup--resources) below). Either way, run `mantis use get_space_context` first.
+
 ## Setup
 
 ```bash
@@ -169,10 +181,7 @@ echo '{"point_uris":["mantis://map/<id>/point/<p1>","mantis://map/<id>/point/<p2
 - `search` without `scope` in a multi-map space — it returns `scope_required`.
 - Looping `inspect` over individual points to summarize a field — one `compare(..., on:"distribution", field:...)` does it.
 
-Not available via `mantis use`:
-- `create_space`, `create_map_from_url`, `modify_map_from_url` — use `mantis setup` / `mantis create map` instead.
-- `cite_file` — needs an agent sandbox the CLI can't provide; in-sandbox agents only.
-- the notebook cell tools (`add_cell`, `execute_cell`, …) — not intended for agent use.
+To **create** a space or map there's no `mantis use` tool — use `mantis setup` / `mantis create map` (see [REST via CLI](#rest-via-cli-setup--resources)). `mantis tools` already lists everything callable, so trust that list.
 
 ## Bulk export (local parquet)
 
@@ -207,4 +216,5 @@ API keys: https://mantis.csail.mit.edu/developer/#keys
 ## Conventions
 
 - Refer to spaces and maps by **name** in user-facing text; use UUIDs in tool arguments.
+- To **link** a space for the user, build the URL yourself: `https://mantis.csail.mit.edu/space/<space_id>` (that's the shareable web address for any space — take the `<space_id>` from `get_space_context` / tool output). `mantis create map` already prints this link; for a space you looked up, construct it the same way.
 - After `mantis select` (or `mantis spaces set` / `mantis threads set`), the next `mantis use` picks up the new context automatically — no reload step.
