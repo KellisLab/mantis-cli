@@ -79,7 +79,6 @@ See the [Claude Code guide](https://mantis.csail.mit.edu/docs/mantis-cli/claude-
 | `mantis use <tool>` | Call any MCP tool (JSON output) |
 | `mantis create map <file>` | Build a map from a local CSV/XLSX |
 | `mantis create codebase [root]` | Index a repo into CSV; add `--create-map` to embed it |
-| `mantis project <text> --map-id <id>` | Project text onto a map; returns the new point's URI |
 
 ## The `mantis use` toolbox
 
@@ -101,8 +100,9 @@ mantis use search --args '{"query":"memory systems","kind":"point","scope":["man
 # Act: save a cluster as a reusable bag
 mantis use create_bag --from-uri "mantis://map/<id>/cluster/<cid>" --name "My Bag"
 
-# Act: project text onto a map as a new point, get its URI back
+# Act: project text (or a file's contents) onto a map as a new point, get its URI back
 mantis use project --text "attention is all you need" --map-id <id>
+mantis use project --file notes.md --map-id <id>
 ```
 
 ## Documentation
