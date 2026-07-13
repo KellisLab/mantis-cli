@@ -89,7 +89,7 @@ Reach for these through `mantis use <tool>` (run `mantis tools` for full argumen
 | --- | --- |
 | **Orient** | `get_space_context`, `inspect` |
 | **Reason** | `search`, `compare`, `intersect`, `diff`, `union`, `export` |
-| **Act** | `create_bag`, `add_to_bag`, `remove_from_bag`, `rename_bag`, `delete_bag`, `filter_to_bag`, `set_plot_variables`, `legend_command`, `create_page` |
+| **Act** | `create_bag`, `add_to_bag`, `remove_from_bag`, `rename_bag`, `delete_bag`, `filter_to_bag`, `set_plot_variables`, `legend_command`, `create_page`, `project` |
 
 ```bash
 # Orient: what's in this space?
@@ -100,6 +100,9 @@ mantis use search --args '{"query":"memory systems","kind":"point","scope":["man
 
 # Act: save a cluster as a reusable bag
 mantis use create_bag --from-uri "mantis://map/<id>/cluster/<cid>" --name "My Bag"
+
+# Act: project text onto a map as a new point, get its URI back
+mantis use project --text "attention is all you need" --map-id <id>
 ```
 
 ## Documentation
