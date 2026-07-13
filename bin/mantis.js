@@ -22,7 +22,7 @@ const { version: VERSION } = JSON.parse(
 
 const c = getContainer();
 
-const { map, codebaseIndexer, tools, ui, setup, selection, context, query } = c;
+const { map, codebaseIndexer, tools, ui, setup, selection, context, query, projection } = c;
 
 const program = new Command();
 
@@ -507,6 +507,33 @@ addMapOptions(create
 
     }
 
+  });
+
+
+
+program
+  .command('project <text>')
+  .description('Project text onto a map; persists a point and returns its URI')
+  .requiredOption('--map-id <id>', 'target map (UUID or Mantis link)')
+  .option('--embedding <json>', 'project a raw embedding instead of text (JSON array)')
+  .option('--service-name <name>', 'embedding service override')
+  .option('--model <name>', 'embedding model override')
+  .option('--no-persist', 'preview coordinates only, without creating a point')
+  .action(async (text, opts) => {
+    try {
+      const embedding = opts.embedding ? JSON.parse(opts.embedding) : undefined;
+      const result = await projection.project(text, {
+        mapId: opts.mapId,
+        embedding,
+        serviceName: opts.serviceName,
+        model: opts.model,
+        persist: opts.persist,
+      });
+      console.log(JSON.stringify(result));
+    } catch (e) {
+      console.error(JSON.stringify({ error: e.message }));
+      process.exit(1);
+    }
   });
 
 
