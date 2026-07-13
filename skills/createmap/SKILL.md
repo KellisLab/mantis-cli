@@ -15,14 +15,22 @@ Use the local `mantis create map` CLI. Prefer passing arguments explicitly so th
 
 1. Get the local CSV/XLSX path from `$ARGUMENTS` or ask the user for it.
 
-2. Inspect the header row if it is a CSV. Decide field types:
+2. Inspect the header row if it is a CSV. Decide field types (each has a matching `--<type>-column` flag, comma-separated):
    - `title`: one human-readable identifier column, usually `title`, `name`, `path`, or `file`.
    - `semantic`: text columns to embed, usually `content`, `summary`, `description`, `text`, or `body`.
    - `categoric`: labels like `language`, `kind`, `extension`, `category`.
    - `numeric`: measurements like `loc`, `bytes`, `score`, `count`.
    - `date`: date/time columns.
    - `links`: URL columns.
+   - `image`: image URL/path columns.
+   - `geospatial`: geographic columns (e.g. a lat/lon pair).
+   - `coordinate1` / `coordinate2`: precomputed x / y layout coordinates to place points directly.
+   - `vector`: precomputed embedding-vector columns.
+   - `custom-model`: columns embedded with a custom model.
+   - `connection`: columns linking points to each other.
    - ignored columns go in `--delete-column`.
+
+   The `--*-column` flags cover all of the backend's supported types. For anything unusual, `--data-types <json>` passes a raw `data_types` array straight through.
 
 3. Ask where to put the map if the user did not specify:
    - new space
