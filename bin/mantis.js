@@ -68,6 +68,20 @@ function addMapOptions(cmd) {
 
     .option('--links-column <columns>', 'comma-separated link column names')
 
+    .option('--custom-model-column <columns>', 'comma-separated custom-model column names')
+
+    .option('--image-column <columns>', 'comma-separated image column names')
+
+    .option('--geospatial-column <columns>', 'comma-separated geospatial column names')
+
+    .option('--coordinate1-column <columns>', 'comma-separated coordinate-1 column names')
+
+    .option('--coordinate2-column <columns>', 'comma-separated coordinate-2 column names')
+
+    .option('--connection-column <columns>', 'comma-separated connection column names')
+
+    .option('--vector-column <columns>', 'comma-separated vector column names')
+
     .option('--delete-column <columns>', 'comma-separated ignored column names')
 
     .option('--data-types <json>', 'raw data_types JSON array')
