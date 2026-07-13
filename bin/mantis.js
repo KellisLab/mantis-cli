@@ -512,17 +512,26 @@ addMapOptions(create
 
 
 program
-  .command('project <text>')
+  .command('project [text]')
   .description('Project text onto a map; persists a point and returns its URI')
   .requiredOption('--map-id <id>', 'target map (UUID or Mantis link)')
+  .option('--file <path>', 'read the text to project from a file instead of an argument')
   .option('--embedding <json>', 'project a raw embedding instead of text (JSON array)')
   .option('--service-name <name>', 'embedding service override')
   .option('--model <name>', 'embedding model override')
   .option('--no-persist', 'preview coordinates only, without creating a point')
   .action(async (text, opts) => {
     try {
+      if (text && opts.file) {
+        throw new Error('Pass either a text argument or --file, not both.');
+      }
+      let source = text;
+      if (opts.file) {
+        if (!fs.existsSync(opts.file)) throw new Error(`File not found: ${opts.file}`);
+        source = fs.readFileSync(opts.file, 'utf8');
+      }
       const embedding = opts.embedding ? JSON.parse(opts.embedding) : undefined;
-      const result = await projection.project(text, {
+      const result = await projection.project(source, {
         mapId: opts.mapId,
         embedding,
         serviceName: opts.serviceName,

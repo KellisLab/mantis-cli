@@ -79,7 +79,7 @@ See the [Claude Code guide](https://mantis.csail.mit.edu/docs/mantis-cli/claude-
 | `mantis use <tool>` | Call any MCP tool (JSON output) |
 | `mantis create map <file>` | Build a map from a local CSV/XLSX |
 | `mantis create codebase [root]` | Index a repo into CSV; add `--create-map` to embed it |
-| `mantis project <text> --map-id <id>` | Project text onto a map; returns the new point's URI |
+| `mantis project <text\|--file f> --map-id <id>` | Project text (or a file's contents) onto a map; returns the new point's URI |
 
 ## The `mantis use` toolbox
 
