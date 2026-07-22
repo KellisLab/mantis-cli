@@ -1,6 +1,6 @@
 {
   "name": "mantisai-cli",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "Mantis CLI — spaces, maps, and MCP tools for AI coding agents",
   "type": "module",
   "license": "MIT",
@@ -29,6 +29,7 @@
   },
   "scripts": {
     "build": "bun build bin/mantis.js --target=node --outfile=dist/mantis.js",
+    "test": "node --test",
     "prepublishOnly": "bun run build"
   },
   "files": [

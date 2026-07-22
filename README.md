@@ -88,7 +88,7 @@ Reach for these through `mantis use <tool>` (run `mantis tools` for full argumen
 | --- | --- |
 | **Orient** | `get_space_context`, `inspect` |
 | **Reason** | `search`, `compare`, `intersect`, `diff`, `union`, `export` |
-| **Act** | `create_bag`, `add_to_bag`, `remove_from_bag`, `rename_bag`, `delete_bag`, `filter_to_bag`, `set_plot_variables`, `legend_command`, `create_page`, `project` |
+| **Act** | `create_bag`, `add_to_bag`, `remove_from_bag`, `rename_bag`, `delete_bag`, `filter_to_bag`, `set_plot_variables`, `legend_command`, `create_page`, `project`, `install_extension` |
 
 ```bash
 # Orient: what's in this space?

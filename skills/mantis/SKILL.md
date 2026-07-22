@@ -124,6 +124,7 @@ mantis://map/<map_id>/selection           # the user's current selection
 - `create_bag` (`--from-uri <uri>` — cluster sources are recursive — or `--args '{"point_uris":[...]}'`), `add_to_bag`, `remove_from_bag`, `rename_bag`, `delete_bag`.
 - `filter_to_bag` — structured filters → saved bag (see its own section below).
 - `set_plot_variables`, `legend_command`, `create_page`.
+- `install_extension` — install a local `.mantisx`, `.zip`, or JSON package for the current API-key user in an owned space.
 
 **Field names are validated.** Any tool taking a `field`/`dimension`/`value` (`compare`, `filter_to_bag`, `legend_command`, `set_plot_variables`) returns `{error:"unknown_field", available_fields:[...]}` for a bad column. **Before filtering or comparing on a field, run `inspect --uri "mantis://map/<id>/dimensions"` to get the real field names and their values — do not invent them, and do not `export` just to discover what a column's values look like.**
 
@@ -210,6 +211,7 @@ Always-present columns: `_point_id`, `_cluster_id`, `_cluster_label` (so you can
 | List spaces | `mantis spaces list --filter "query"` |
 | Create map from CSV | `mantis create map file.csv` |
 | Index codebase | `mantis create codebase . --create-map` |
+| Install extension | `mantis use install_extension --file extension.mantisx --space-id <space-id>` |
 
 API keys: https://mantis.csail.mit.edu/developer/#keys
 
