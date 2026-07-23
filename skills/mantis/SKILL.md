@@ -15,6 +15,7 @@ The core entities:
 - **Bag** — a named, user-defined set of points you build by filtering or hand-picking. The unit of "save this subset to come back to."
 - **Point** — one record on the map.
 - **Thread (space state)** — a saved view/state of a space; the active one scopes what your commands operate on.
+- **Extension** — a trusted, portable package that adds sandboxed workspace panels, background commands or subscriptions, and optionally Python-backed actions through a permission-gated SDK.
 
 You explore a map by reading its clusters and field schema, narrow to the points you care about with search and filters, save them as bags, and pull rows out only when a question needs the underlying data.
 
@@ -30,15 +31,18 @@ If it fails with no thread configured, run `mantis setup` or `mantis select`, th
 
 ## Companion skills
 
-This `/mantis` skill is the hub for exploring and reshaping **existing** maps. Three companion skills cover the build-and-switch workflows — reach for one when the task matches, then come back here to work the map:
+This `/mantis` skill is the hub for exploring and reshaping **existing** maps. Four companion skills cover the build, extension, and switch workflows — reach for one when the task matches, then come back here to work the map:
 
 | Skill | Reach for it when | Core usage |
 |-------|-------------------|------------|
 | `/mantis-select` | Switching the active space or thread before doing work | Resolve a name → UUID, then `mantis spaces set` / `mantis threads set`. Non-interactive; never opens the blocking picker. |
 | `/mantis-createmap` | Turning a local CSV into a Mantis map | `mantis create map <file.csv>` with `--<type>-column` flags (title / semantic / categoric / numeric / date …) to type each field. |
 | `/mantis-codebase` | Indexing a repo into a searchable semantic map | `mantis create codebase <root> [--create-map]` — scans files to a CSV, then optionally embeds it as a map in one call. |
+| `/mantis-extensions` | Building, modifying, validating, packaging, or installing a Mantis extension | Route to the relevant extension docs, declare only required permissions, package as `.mantisx`/`.zip`, then install with `mantis use install_extension` when requested. |
 
-`/mantis-select` is safe to invoke directly. `/mantis-createmap` and `/mantis-codebase` are user-facing slash commands that won't auto-trigger — when you're driving the flow yourself, just run the underlying `mantis create map` / `mantis create codebase` commands (documented under [REST via CLI](#rest-via-cli-setup--resources) below). Either way, run `mantis use get_space_context` first.
+Extensions are scoped to the installing user in a space. A package may contribute one or more panels, a background host for durable behavior, and an optional Python backend. Panel and host code access Mantis only through `window.mantis` / `mantis`; protected SDK calls require explicit manifest permissions. Treat installation like installing an IDE extension: review its source, requested permissions, backend dependencies, and network access.
+
+`/mantis-select` and `/mantis-extensions` are safe to invoke directly. `/mantis-createmap` and `/mantis-codebase` are user-facing slash commands that won't auto-trigger — when you're driving the flow yourself, just run the underlying `mantis create map` / `mantis create codebase` commands (documented under [REST via CLI](#rest-via-cli-setup--resources) below). Either way, run `mantis use get_space_context` first.
 
 ## Setup
 
