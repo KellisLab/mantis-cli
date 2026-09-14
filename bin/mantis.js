@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { Command } from 'commander';
+import { registerComposerCommands } from '../lib/commands/composer.js';
 
 
 
@@ -524,6 +525,8 @@ addMapOptions(create
   });
 
 
+
+registerComposerCommands(program, c);
 
 program.parseAsync(process.argv);
 

@@ -133,3 +133,27 @@ Publishing is automated: push a `v*` tag and the [GitHub Actions workflow](.gith
 <p align="center">
   <sub>Built at <a href="https://mantis.csail.mit.edu">MIT CSAIL</a> · <a href="https://github.com/KellisLab/mantis-cli/blob/main/LICENSE">MIT License</a></sub>
 </p>
+
+
+## Composer runs (account-restricted pilot)
+
+`mantis composer` uses supported, authenticated HTTP run APIs. Your configured API key must belong to the server-enabled pilot account and have explicit `composer:access`, `composer:read`, `composer:execute`, or `composer:cancel` scopes for the commands you use. The server checks current permissions and revocation; a local username setting cannot grant pilot access.
+
+```bash
+mantis composer access
+mantis composer capabilities
+mantis composer run --chat-id CHAT_UUID --snapshot-id SNAPSHOT_UUID \
+  --message-id analysis-attempt-1 --model-id MODEL_ID --effort high --file request.txt
+mantis composer status RUN_UUID
+mantis composer events RUN_UUID --after 0 --limit 100
+mantis composer resume RUN_UUID --after LAST_SEQUENCE --pages 10
+mantis composer cancel RUN_UUID --request-token CANCEL_UUID
+```
+
+Obtain the exact model ID and supported reasoning options from `composer capabilities`. A saved chat and prepared context snapshot must already exist in a supported Mantis client; this command group does not silently choose live Space data or create context. Pass their UUIDs explicitly. Creating a chat and freezing context entirely from the CLI requires additional authenticated server API support.
+
+Use exactly one of `--message` or `--file`. Choose a stable `--message-id` before submitting and reuse the same request after a timeout or lost response. An accepted receipt can contain a `dispatch_error`: the run still exists, so inspect its state or retry with that same identity. To continue an existing native conversation, send a new request with the same saved chat, a newly prepared snapshot, and a new message identity; the server verifies whether its retained native history can be resumed.
+
+`events` prints one actual ordered journal page. `resume` prints up to `--pages` pages as JSON lines and **only resumes reading**, without submitting an analysis. Save the returned `next_after_sequence` for the next read. Explicit `history_incomplete` and `retention_gaps` fields report missing retained observations; the CLI does not manufacture replacements. Reading events does not take over a browser connection's cursor.
+
+Use one stable UUID cancellation token per Stop request. Keep the canonical token returned by the server for retries. A pending cancellation receipt means Stop is still being resolved; only the server's actual terminal state confirms the process ended. Disabling new native execution still permits authorized retained status, replay, and Stop according to server policy.
