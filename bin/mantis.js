@@ -5,6 +5,7 @@ import path from 'node:path';
 
 import { Command } from 'commander';
 import { registerComposerCommands } from '../lib/commands/composer.js';
+import { registerDriveCommands } from '../lib/commands/drive.js';
 
 
 
@@ -527,6 +528,8 @@ addMapOptions(create
 
 
 registerComposerCommands(program, c);
+
+registerDriveCommands(program, c);
 
 program.parseAsync(process.argv);
 

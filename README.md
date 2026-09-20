@@ -77,6 +77,13 @@ See the [Claude Code guide](https://mantis.csail.mit.edu/docs/mantis-cli/claude-
 | `mantis threads list\|new\|set` | Scriptable thread ops (JSON) |
 | `mantis tools` | List every MCP tool and its arguments |
 | `mantis use <tool>` | Call any MCP tool (JSON output) |
+| `mantis open [--print]` | Open (or print) the link that puts a browser tab on your thread |
+| `mantis doctor` | Check key, API, thread and attached tab; names the first failing check |
+| `mantis state [fields…]` | Live thread state: selection, plot axes, bags, colour-by |
+| `mantis selection [uris…]` | Select on the live map, show the selection, or `--clear` it |
+| `mantis focus <uri>` · `mantis fit` | Fly the camera to a point, cluster or bag; fit the whole map |
+| `mantis panel open\|close\|list` | Workspace panels in your open tab |
+| `mantis ui status` · `mantis ui run <command>` | Attached tabs, your access level, and any drive command (`view.get`, `demo.caption`, `debug.perf`, …) |
 | `mantis create map <file>` | Build a map from a local CSV/XLSX |
 | `mantis create codebase [root]` | Index a repo into CSV; add `--create-map` to embed it |
 
@@ -104,6 +111,22 @@ mantis use create_bag --from-uri "mantis://map/<id>/cluster/<cid>" --name "My Ba
 mantis use project --text "attention is all you need" --map-id <id>
 mantis use project --file notes.md --map-id <id>
 ```
+
+## Driving a live tab
+
+Pair the CLI with any browser — yours, Claude in Chrome, the Codex in-app browser, browser-use — and an agent can operate Mantis while you watch.
+
+```bash
+mantis open --print                         # hand this link to the browser: the tab joins your thread
+mantis doctor                               # key → API → thread → tab attached
+mantis selection "mantis://map/<id>/cluster/<cid>"   # the tab highlights it; the Composer sees it as "my selection"
+mantis focus "mantis://map/<id>/cluster/<cid>"       # fly there
+mantis panel open plots --location right
+mantis ui run demo.caption --text "Comparing the two clusters" --seconds 4
+mantis state selection                      # read back what the tab (or the person) selected
+```
+
+State commands (`selection`, bags, plots) change the thread and reach every tab on it. `focus`, `fit`, `panel` and `ui run` act only on **your own** open tabs and return the tab's answer; with no tab open they exit `5` with the link to open. `mantis ui status` lists exactly the commands your access level allows.
 
 ## Documentation
 
