@@ -188,6 +188,22 @@ echo '{"point_uris":["mantis://map/<id>/point/<p1>","mantis://map/<id>/point/<p2
 
 To **create** a space or map there's no `mantis use` tool — use `mantis setup` / `mantis create map` (see [REST via CLI](#rest-via-cli-setup--resources)). `mantis tools` already lists everything callable, so trust that list.
 
+## Driving a live tab
+
+When the user has Mantis open in a browser (or you have a browser tool), you can act on what they see. **The map is a canvas: never try to click points or read the selection from pixels — act and read through the CLI, and use the browser to look.**
+
+```bash
+mantis open --print          # → {url}. Open this URL in the browser so the tab is on YOUR thread.
+mantis doctor                # key → API → thread → tab attached. Exit 5 = no tab on this thread yet.
+```
+
+- **Change what the thread shows** (every tab follows, the Composer sees it too): `mantis selection <uri…>` / `mantis selection --clear`, plus the Act-tier tools (`create_bag`, `set_plot_variables`, `legend_command`, …).
+- **Read what the person did**: `mantis state selection` (count, a 25-id preview, how it was made) or `mantis use inspect --uri "mantis://map/<id>/selection"`.
+- **Move their screen** (only the key owner's own tabs; returns the tab's answer): `mantis focus <uri>`, `mantis fit`, `mantis panel open|close|list`, `mantis ui run <command> [--key value …]`.
+- **Discover commands**: `mantis ui status` → `commands` lists every drive command your access level allows, with arguments (`view.get`, `view.set`, `map.activate`, `composer.open`, `demo.caption`, `demo.spotlight`, and with developer access `debug.status`, `debug.logs`, `debug.perf`, `debug.errors`, `debug.query`, …).
+- **Demo pattern**: `demo.caption` to say what you are about to do → act (`selection`, `focus`, `panel open`) → screenshot to verify → next step.
+- **Errors are structured**: `{error, code, hint}`. `no_tab_attached` → open the link from `mantis open --print`; `command_forbidden` → that command needs a higher access level; `rate_limited` → pause briefly.
+
 ## Bulk export (local parquet)
 
 `mantis use export` resolves a URI to its rows and writes a local parquet file under `~/.mantis/mantis_data/`. It pulls the **entire** point set (no row limit — capped only at 200,000), so use it only when a question genuinely needs MANY rows: correlations, distributions, top-K, outliers. For "what is this map" / "what's in it", prefer `inspect` — do **not** export just to see example rows. Narrow the URI to a cluster when you can.
