@@ -120,6 +120,15 @@ async function listTools() {
 
 }
 
+function printError(error) {
+  console.error(JSON.stringify({
+    error: error.code || 'request_failed',
+    detail: error.message || String(error),
+    ...(error.hint ? { hint: error.hint } : {}),
+  }));
+  process.exitCode = 1;
+}
+
 
 
 program
@@ -173,9 +182,9 @@ program
 
   .description('Show current Mantis config')
 
-  .action(() => {
+  .action(async () => {
 
-    const s = context.status();
+    const s = await context.status();
 
     console.log('Mantis — status\n');
 
@@ -191,6 +200,12 @@ program
 
     console.log(`Thread:  ${s.threadName} (${s.threadId})`);
 
+    console.log(`Access:  ${s.accessMode}${s.accessMode === 'unknown' ? '' : ` · destructive ${s.destructiveUnlocked ? 'unlocked' : 'locked'}`}`);
+
+    if (s.capabilities?.length) console.log(`Scopes:  ${s.capabilities.join(', ')}`);
+
+    if (s.accessError) console.log(`Access details unavailable: ${s.accessError}`);
+
     if (!s.hasThread) {
 
       console.log('\nNo thread selected. Run: mantis select thread');
@@ -199,6 +214,34 @@ program
 
     }
 
+  });
+
+program.command('unlock')
+  .description('Unlock destructive actions for this API-key session')
+  .option('-y, --yes', 'confirm without prompting')
+  .action(async (options) => {
+    try { console.log(JSON.stringify(await context.unlock({ yes: Boolean(options.yes) }))); }
+    catch (error) { printError(error); }
+  });
+
+program.command('lock')
+  .description('Lock destructive actions for this API-key session')
+  .action(async () => {
+    try { console.log(JSON.stringify(await context.lock())); }
+    catch (error) { printError(error); }
+  });
+
+program.command('points')
+  .description('List points behind a Mantis URI with stable cursor pagination')
+  .argument('<uri>', 'map, cluster, bag, selection, or point URI')
+  .option('--cursor <cursor>', 'cursor returned by the previous page')
+  .option('--limit <n>', 'page size, 1–100', (value) => Number(value), 50)
+  .option('--fields <names>', 'comma-separated data fields to include')
+  .action(async (uri, options) => {
+    try {
+      const result = await tools.listPoints(uri, options);
+      console.log(JSON.stringify(result, null, 2));
+    } catch (error) { printError(error); }
   });
 
 
@@ -416,8 +459,7 @@ program
       console.log(JSON.stringify(result, null, 2));
 
     } catch (e) {
-
-      ui.die(e.message || String(e));
+      printError(e);
 
     }
 

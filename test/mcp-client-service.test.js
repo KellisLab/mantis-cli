@@ -9,6 +9,7 @@ test('MCP calls use the developer key and selected thread', () => {
     apiBaseUrl: 'https://mantis.csail.mit.edu/',
     apiKey: 'test_example',
     spaceStateId: 'thread-1',
+    approvalToken: 'approval-once',
   };
   const service = new McpClientService({ requireAuth: () => config });
 
@@ -16,6 +17,7 @@ test('MCP calls use the developer key and selected thread', () => {
   assert.deepEqual(service._headers(config), {
     Authorization: 'Bearer test_example',
     Accept: 'application/json',
+    'X-Mantis-Approval': 'approval-once',
     'X-Space-State-ID': 'thread-1',
   });
 });

@@ -71,14 +71,16 @@ See the [Claude Code guide](https://mantis.csail.mit.edu/docs/mantis-cli/claude-
 | Command | Description |
 | --- | --- |
 | `mantis setup [editor]` | API + space/thread, or sync skills for `claude`/`opencode`/`codex`/`cursor`/`windsurf`/`copilot`/`antigravity` |
-| `mantis status` | Show current space, thread, and config |
+| `mantis status` | Show current space, thread, key permissions, and lock state |
+| `mantis unlock` · `mantis lock` | Unlock destructive actions once for the key session, or lock them again |
 | `mantis select [space\|thread\|both]` | Switch the active space and/or thread |
 | `mantis spaces list\|resolve\|set` | Scriptable space ops (JSON) |
 | `mantis threads list\|new\|set` | Scriptable thread ops (JSON) |
 | `mantis tools` | List every MCP tool and its arguments |
 | `mantis use <tool>` | Call any MCP tool (JSON output) |
+| `mantis points <uri>` | List points deterministically with cursor pagination |
 | `mantis open [--print]` | Open (or print) the link that puts a browser tab on your thread |
-| `mantis doctor` | Check key, API, thread and attached tab; names the first failing check |
+| `mantis doctor [--ui]` | Check headless access; add `--ui` to require an attached tab |
 | `mantis state [fields…]` | Live thread state: selection, plot axes, bags, colour-by |
 | `mantis selection [uris…]` | Select on the live map, show the selection, or `--clear` it |
 | `mantis focus <uri>` · `mantis fit` | Fly the camera to a point, cluster or bag; fit the whole map |
@@ -104,6 +106,9 @@ mantis use get_space_context
 # Reason: semantically search a map
 mantis use search --args '{"query":"memory systems","kind":"point","scope":["mantis://map/<id>"]}'
 
+# Enumerate rather than search: pass next_cursor back to --cursor for the next page
+mantis points "mantis://map/<id>" --limit 50 --fields title,summary
+
 # Act: save a cluster as a reusable bag
 mantis use create_bag --from-uri "mantis://map/<id>/cluster/<cid>" --name "My Bag"
 
@@ -118,7 +123,8 @@ Pair the CLI with any browser — yours, Claude in Chrome, the Codex in-app brow
 
 ```bash
 mantis open --print                         # hand this link to the browser: the tab joins your thread
-mantis doctor                               # key → API → thread → tab attached
+mantis doctor                               # key → API → thread → MCP tools (no tab required)
+mantis doctor --ui                          # also require a live tab
 mantis selection "mantis://map/<id>/cluster/<cid>"   # the tab highlights it; the Composer sees it as "my selection"
 mantis focus "mantis://map/<id>/cluster/<cid>"       # fly there
 mantis panel open plots --location right
