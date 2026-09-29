@@ -53,7 +53,9 @@ function addMapOptions(cmd) {
 
     .option('--space-search <query>', 'search text for choosing an existing space')
 
-    .option('--public', 'make a new space public')
+    .option('--public', 'unsupported: public Space creation is not available through the API')
+
+    .option('--unlisted', 'make a new space accessible to anyone with its link')
 
     .option('--private', 'make a new space private')
 
@@ -456,7 +458,7 @@ addMapOptions(create
 
     try {
 
-      if (opts.private) opts.public = false;
+      if (opts.private) opts.unlisted = false;
 
       const result = await map.createMap(path.resolve(file), opts);
 
@@ -490,7 +492,7 @@ addMapOptions(create
 
     try {
 
-      if (opts.private) opts.public = false;
+      if (opts.private) opts.unlisted = false;
 
       const out = path.resolve(opts.out || defaultCodebaseOut(root));
 

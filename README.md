@@ -96,6 +96,8 @@ For a batch, use an existing Space UUID and CSV paths relative to the manifest:
 
 `mantis create batch batch.json` writes `batch.json.state.json` and skips confirmed submissions on rerun. `submitted` means map creation started, not finished. If a request fails or the process stops mid-upload, the checkpoint marks it `needs_review`; inspect the Space before changing that entry to `submitted` (found) or `pending` (confirmed absent). The CLI does not automatically retry an uncertain upload.
 
+For `mantis create map`, new Spaces are private by default; `--unlisted` allows link access. The backend does not permit API-key callers to create public Spaces, so `--public` now fails explicitly.
+
 ## The `mantis use` toolbox
 
 Reach for these through `mantis use <tool>` (run `mantis tools` for full argument schemas):
