@@ -52,7 +52,7 @@ mantis setup claude              # optional: install Claude Code skills
 mantis use get_space_context     # confirm you're connected
 ```
 
-Config lives at `~/.mantis/config.json`. Grab a developer key at **[mantis.csail.mit.edu/developer](https://mantis.csail.mit.edu/developer/#keys)**.
+Config lives at `~/.mantis/config.json`. It is replaced atomically and restricted to the current OS user where file modes are supported; it still contains the API key, so an OS credential-vault integration remains future hardening. Destructive unlock leases expire locally after at most one hour. Grab a developer key at **[mantis.csail.mit.edu/developer](https://mantis.csail.mit.edu/developer/#keys)**.
 
 > **Naming:** repo [`KellisLab/mantis-cli`](https://github.com/KellisLab/mantis-cli) · npm package **`mantisai-cli`** · binary **`mantis`**.
 
