@@ -7,12 +7,19 @@ import { DriveError, DriveService } from '../lib/services/drive-service.js';
 const CONFIG = { apiBaseUrl: 'https://kellis-h200-1.csail.mit.edu', apiKey: 'test_key', spaceId: 'space-1', spaceStateId: 'thread-1', spaceStateName: 'Main' };
 const CLUSTER = 'mantis://map/m1/cluster/c1';
 
-function service({ tool = async () => ({ ok: true }), request = async () => ({}) } = {}) {
+function service({ tool = async () => ({ ok: true }), request = async () => ({}), listTools = async () => ({ tools: [{ name: 'inspect' }] }) } = {}) {
   const calls = [];
   const drive = new DriveService({
     configStore: { requireAuth: () => CONFIG },
-    client: { request: async (...args) => { calls.push(['request', ...args]); return request(...args); }, listSpaces: async () => ({}) },
-    mcp: { callTool: async (...args) => { calls.push(['tool', ...args]); return tool(...args); } },
+    client: {
+      request: async (...args) => { calls.push(['request', ...args]); return request(...args); },
+      listSpaces: async () => ({}),
+      getKeyStatus: async () => ({ access_mode: 'read_write', destructive_unlocked: false }),
+    },
+    mcp: {
+      callTool: async (...args) => { calls.push(['tool', ...args]); return tool(...args); },
+      listTools,
+    },
   });
   return { drive, calls };
 }
@@ -78,13 +85,27 @@ test('a refusal carries its code, hint and a meaningful exit code', async () => 
   await assert.rejects(unknown.drive.select(['nope']), (error) => error.code === 'uri_invalid' && error.exitCode === 7);
 });
 
-test('doctor names the first failing check and hands over the link', async () => {
+test('doctor is healthy headlessly and only requires a tab with --ui', async () => {
   const { drive } = service({
     request: async () => ({ name: 'Main', space_state_id: 'thread-1' }),
     tool: async () => ({ ok: true, level: 'standard', commands: { 'view.fit': {} }, tabs: [], open_link: 'https://mantis.csail.mit.edu/space/space-1?thread=thread-1' }),
   });
+  const headless = await drive.doctor();
+  assert.equal(headless.ok, true);
+  assert.deepEqual(headless.checks.map((c) => [c.check, c.ok]), [['key and API', true], ['thread', true], ['tools', true]]);
+
+  const ui = await drive.doctor({ requireUi: true });
+  assert.equal(ui.ok, false);
+  assert.deepEqual(ui.checks.map((c) => [c.check, c.ok]), [['key and API', true], ['thread', true], ['tools', true], ['tab attached', false]]);
+  assert.match(ui.checks[3].hint, /thread=thread-1/);
+});
+
+test('doctor rejects an authenticated MCP connection with no permitted tools', async () => {
+  const { drive } = service({
+    request: async () => ({ name: 'Main', space_state_id: 'thread-1' }),
+    listTools: async () => ({ tools: [] }),
+  });
   const report = await drive.doctor();
   assert.equal(report.ok, false);
-  assert.deepEqual(report.checks.map((c) => [c.check, c.ok]), [['key and API', true], ['thread', true], ['tools', true], ['tab attached', false]]);
-  assert.match(report.checks[3].hint, /thread=thread-1/);
+  assert.match(report.checks.at(-1).error, /no permitted tools/i);
 });
