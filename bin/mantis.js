@@ -6,6 +6,7 @@ import path from 'node:path';
 import { Command } from 'commander';
 import { registerComposerCommands } from '../lib/commands/composer.js';
 import { registerDriveCommands } from '../lib/commands/drive.js';
+import { submitBatch } from '../lib/services/batch-service.js';
 
 
 
@@ -52,7 +53,9 @@ function addMapOptions(cmd) {
 
     .option('--space-search <query>', 'search text for choosing an existing space')
 
-    .option('--public', 'make a new space public')
+    .option('--public', 'unsupported: public Space creation is not available through the API')
+
+    .option('--unlisted', 'make a new space accessible to anyone with its link')
 
     .option('--private', 'make a new space private')
 
@@ -427,21 +430,35 @@ program
 
 const create = program.command('create').description('Create Mantis resources from local inputs');
 
+create.command('batch')
+  .description('Submit a resumable batch of CSV maps to an existing Space')
+  .argument('<manifest>', 'JSON manifest path')
+  .option('--state <file>', 'checkpoint file path')
+  .action(async (manifest, opts) => {
+    try {
+      const result = await submitBatch(path.resolve(manifest), map,
+        opts.state ? { stateFile: path.resolve(opts.state) } : {});
+      console.log(JSON.stringify(result, null, 2));
+    } catch (error) {
+      printError(error);
+    }
+  });
+
 
 
 addMapOptions(create
 
   .command('map')
 
-  .description('Create a Mantis map from a local CSV/XLSX file')
+  .description('Create a Mantis map from a local CSV file')
 
-  .argument('<file>', 'CSV/XLSX file path'))
+  .argument('<file>', 'CSV file path'))
 
   .action(async (file, opts) => {
 
     try {
 
-      if (opts.private) opts.public = false;
+      if (opts.private) opts.unlisted = false;
 
       const result = await map.createMap(path.resolve(file), opts);
 
@@ -475,7 +492,7 @@ addMapOptions(create
 
     try {
 
-      if (opts.private) opts.public = false;
+      if (opts.private) opts.unlisted = false;
 
       const out = path.resolve(opts.out || defaultCodebaseOut(root));
 

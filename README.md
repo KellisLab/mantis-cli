@@ -84,8 +84,19 @@ See the [Claude Code guide](https://mantis.csail.mit.edu/docs/mantis-cli/claude-
 | `mantis focus <uri>` · `mantis fit` | Fly the camera to a point, cluster or bag; fit the whole map |
 | `mantis panel open\|close\|list` | Workspace panels in your open tab |
 | `mantis ui status` · `mantis ui run <command>` | Attached tabs, your access level, and any drive command (`view.get`, `demo.caption`, `debug.perf`, …) |
-| `mantis create map <file>` | Build a map from a local CSV/XLSX |
+| `mantis create map <file>` | Build a map from a local CSV |
+| `mantis create batch <manifest.json>` | Submit multiple CSV maps to an existing Space with a local resume checkpoint |
 | `mantis create codebase [root]` | Index a repo into CSV; add `--create-map` to embed it |
+
+For a batch, use an existing Space UUID and CSV paths relative to the manifest:
+
+```json
+{"space_id":"11111111-1111-4111-8111-111111111111","maps":[{"file":"data/a.csv","map_name":"A"},{"file":"data/b.csv","map_name":"B"}]}
+```
+
+`mantis create batch batch.json` writes `batch.json.state.json` and skips confirmed submissions on rerun. `submitted` means map creation started, not finished. If a request fails or the process stops mid-upload, the checkpoint marks it `needs_review`; inspect the Space before changing that entry to `submitted` (found) or `pending` (confirmed absent). The CLI does not automatically retry an uncertain upload.
+
+For `mantis create map`, new Spaces are private by default; `--unlisted` allows link access. The backend does not permit API-key callers to create public Spaces, so `--public` now fails explicitly.
 
 ## The `mantis use` toolbox
 
